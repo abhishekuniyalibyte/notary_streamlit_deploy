@@ -62,25 +62,18 @@ def compute_case_status(results: Dict[str, Any]) -> Dict[str, Any]:
     error_count = sum(1 for fr in file_results if fr.get("has_error"))
     missing_docs = summarize_missing_documents(results.get("gap_structure") or {})
 
-    # Check for urgent/high gaps (consistency, expiry, invalid docs, legal noncompliance, etc.)
+    # Check for semantic validation errors (consistency + expiry issues)
     gap_structure = results.get("gap_structure") or {}
     all_gaps = gap_structure.get("gaps", []) or []
 
-    critical_gaps = [
-        gap for gap in all_gaps
-        if (gap.get("priority") or "").lower() in ("urgent", "high")
-    ]
     semantic_errors = [
-        gap for gap in critical_gaps
-        if (gap.get("gap_type") or "").lower() == "semantic_error"
-    ]
-    other_critical_gaps = [
-        gap for gap in critical_gaps
-        if (gap.get("gap_type") or "").lower() not in ("missing_document", "semantic_error")
+        gap for gap in all_gaps
+        if gap.get("gap_type") in ("semantic_error", "SEMANTIC_ERROR") and
+        gap.get("priority") in ("urgent", "high", "URGENT", "HIGH")
     ]
 
     status_files = "ATTENTION REQUIRED" if error_count > 0 else "VALID"
-    status_case = "ATTENTION REQUIRED" if (error_count > 0 or bool(missing_docs) or bool(semantic_errors) or bool(other_critical_gaps)) else "VALID"
+    status_case = "ATTENTION REQUIRED" if (error_count > 0 or bool(missing_docs) or bool(semantic_errors)) else "VALID"
 
     return {
         "status_files": status_files,
@@ -89,9 +82,6 @@ def compute_case_status(results: Dict[str, Any]) -> Dict[str, Any]:
         "missing_docs": missing_docs,
         "semantic_errors": semantic_errors,
         "semantic_error_count": len(semantic_errors),
-        "critical_gap_count": len(critical_gaps),
-        "other_critical_gaps": other_critical_gaps,
-        "other_critical_gap_count": len(other_critical_gaps),
         "total_files": len(file_results),
         "doc_types": sorted({fr.get("document_type", "unknown") for fr in file_results}),
     }
@@ -117,8 +107,6 @@ def render_case_status_panel(results: Dict[str, Any]) -> None:
                 issues.append(f"{status['error_count']} file error(s)")
             if status.get("semantic_error_count", 0) > 0:
                 issues.append(f"{status['semantic_error_count']} data consistency/validity issue(s)")
-            if status.get("other_critical_gap_count", 0) > 0:
-                issues.append(f"{status['other_critical_gap_count']} critical rule issue(s)")
             if missing_docs:
                 issues.append(f"{len(missing_docs)} missing document(s)")
 
@@ -454,22 +442,10 @@ def is_zip_file(file_path: Path) -> bool:
         return False
 
 
-def get_groq_api_key() -> str:
-    try:
-        secret_value = st.secrets.get("GROQ_API_KEY", "")
-    except Exception:
-        secret_value = ""
-    return (secret_value or os.getenv("GROQ_API_KEY", "")).strip()
-
-
 def extract_text_from_doc_via_libreoffice(file_path: Path) -> Tuple[str, Optional[str]]:
     soffice_path = shutil.which("soffice") or shutil.which("libreoffice")
     if not soffice_path:
-        return (
-            "",
-            "LibreOffice (soffice) is required to extract legacy .doc files. "
-            "If deploying on Streamlit Community Cloud, add a `packages.txt` with `libreoffice`.",
-        )
+        return "", "LibreOffice is required to extract legacy .doc files."
 
     with tempfile.TemporaryDirectory() as tmpdir:
         cmd = [
@@ -2933,39 +2909,28 @@ def render_chat_mode(
                             )
                             st.session_state["chat_flow_phase"] = 2
                     else:
-                        # ── VALIDATE mode: show issues ──
-                        status = compute_case_status(results)
+                        # ── VALIDATE mode: show issues as before ──
                         file_errors = summarize_file_errors(results.get("file_results") or [])
-                        missing_docs = status.get("missing_docs") or []
-                        semantic_errors = status.get("semantic_errors") or []
-                        other_critical_gaps = status.get("other_critical_gaps") or []
+                        gap_structure = results.get("gap_structure") or {}
+                        all_gaps = gap_structure.get("gaps", []) or []
+                        semantic_errors = [
+                            gap for gap in all_gaps
+                            if gap.get("gap_type") in ("semantic_error", "SEMANTIC_ERROR") and
+                            gap.get("priority") in ("urgent", "high", "URGENT", "HIGH")
+                        ]
 
-                        if not file_errors and not missing_docs and not semantic_errors and not other_critical_gaps:
-                            verdict = (
-                                "✅ **Your documents look correct!**\n\n"
-                                "All files are valid with no consistency issues.\n\n"
-                                "Say **\"generate files\"** when you're ready to download the report."
-                            )
+                        if not file_errors and not semantic_errors:
+                            verdict = "✅ **Your documents look correct!**\n\nAll files are valid with no consistency issues.\n\nSay **\"generate files\"** when you're ready to download the report."
                         else:
                             issues_summary = []
                             if file_errors:
                                 issues_summary.append(f"**File Errors ({len(file_errors)} files):**")
                                 issues_summary.extend(file_errors[:5])
-                            if missing_docs:
-                                issues_summary.append(f"\n**Missing Required Documents ({len(missing_docs)}):**")
-                                issues_summary.extend([f"- {d}" for d in missing_docs[:5]])
                             if semantic_errors:
                                 issues_summary.append(f"\n**Data Consistency Issues ({len(semantic_errors)}):**")
                                 for err in semantic_errors[:3]:
                                     issues_summary.append(f"- {err.get('title', 'Consistency error')}")
-                            if other_critical_gaps:
-                                issues_summary.append(f"\n**Critical Rule Issues ({len(other_critical_gaps)}):**")
-                                for gap in other_critical_gaps[:3]:
-                                    issues_summary.append(f"- {gap.get('title', 'Issue')}")
-                            verdict = (
-                                f"❌ **Issues found in your documents.**\n\n{chr(10).join(issues_summary)}\n\n"
-                                "Say **\"fix it\"** to auto-correct these issues, or **\"generate files\"** to download the validation report as-is."
-                            )
+                            verdict = f"❌ **Issues found in your documents.**\n\n{chr(10).join(issues_summary)}\n\nSay **\"fix it\"** to auto-correct these issues, or **\"generate files\"** to download the validation report as-is."
                         st.session_state["chat_flow_phase"] = 2
 
             except Exception as _exc:
@@ -3061,7 +3026,7 @@ def render_chat_mode(
         # CONVERSATIONAL ASSISTANT - Intent Detection
         # ========================================================================
         try:
-            groq_key = get_groq_api_key()
+            groq_key = os.getenv("GROQ_API_KEY", "")
             if groq_key:
                 intent_result = detect_user_intent(user_message, groq_key)
 
@@ -3247,18 +3212,18 @@ def render_chat_mode(
                     assistant_parts.append("Upload the missing doc(s) and say 'check' again.")
             else:
                 with st.spinner("Analyzing..."):
-                            results = run_flow(
-                                uploaded_files=uploaded_items,
-                                intent_inputs=intent_inputs,
-                                summary_index=summary_index,
-                                catalog_settings=catalog_settings,
-                                notary_inputs=st.session_state["chat_case"]["notary_inputs"],
-                                search_settings=search_settings,
-                                llm_settings=llm_settings,
-                                content_only=content_only,
-                                operation=st.session_state["chat_case"].get("operation", "create"),
-                                auto_fix=False,
-                            )
+	                        results = run_flow(
+	                            uploaded_files=uploaded_items,
+	                            intent_inputs=intent_inputs,
+	                            summary_index=summary_index,
+	                            catalog_settings=catalog_settings,
+	                            notary_inputs=st.session_state["chat_case"]["notary_inputs"],
+	                            search_settings=search_settings,
+	                            llm_settings=llm_settings,
+	                            content_only=content_only,
+	                            operation=st.session_state["chat_case"].get("operation", "create"),
+	                            auto_fix=False,
+	                        )
                 st.session_state["chat_last_results"] = results
                 st.session_state["chat_flow_phase"] = 2  # results ready
 
@@ -3413,10 +3378,6 @@ def main() -> None:
     st.write("Streamlit UI for Notarial, dataset matching, and optional web search stub.")
 
     st.sidebar.header("Settings")
-    with st.sidebar.expander("System dependencies", expanded=False):
-        st.write(f"- Poppler (`pdfinfo`): {('found' if shutil.which('pdfinfo') else 'missing')}")
-        st.write(f"- Tesseract (`tesseract`): {('found' if shutil.which('tesseract') else 'missing')}")
-        st.write(f"- LibreOffice (`soffice`): {('found' if (shutil.which('soffice') or shutil.which('libreoffice')) else 'missing')}")
     with st.sidebar.expander("Dataset settings", expanded=False):
         summary_path = st.text_input("certificate_summary.json path", DEFAULT_SUMMARY_PATH)
         catalog_path = st.text_input("client_file_catalogs.json path", DEFAULT_CATALOG_PATH)
@@ -3426,9 +3387,9 @@ def main() -> None:
         value=True,
     )
     content_only = st.sidebar.checkbox("Match by content only", value=True)
-    load_dotenv()
     if enable_llm:
-        groq_api_key = get_groq_api_key()
+        load_dotenv()
+        groq_api_key = os.getenv("GROQ_API_KEY", "")
         extraction_model = st.sidebar.text_input(
             "Groq extraction model",
             value=DEFAULT_EXTRACTION_MODEL,
@@ -3442,16 +3403,14 @@ def main() -> None:
             value=DEFAULT_QA_MODEL,
         )
         if groq_api_key:
-            st.sidebar.caption("GROQ API key loaded")
+            st.sidebar.caption("GROQ API key loaded from .env")
         else:
-            st.sidebar.warning("GROQ API key not found (set Streamlit Secrets or env var).")
+            st.sidebar.warning("GROQ API key not found in .env")
     else:
         groq_api_key = ""
         extraction_model = DEFAULT_EXTRACTION_MODEL
         analysis_model = DEFAULT_ANALYSIS_MODEL
         qa_model = DEFAULT_QA_MODEL
-
-    llm_enabled = bool(enable_llm and groq_api_key)
     enable_search = st.sidebar.checkbox("Enable web search fallback (stub)", value=False)
     if enable_search:
         search_provider = st.sidebar.selectbox("Search provider", ["none", "serpapi", "bing"])
@@ -3503,7 +3462,7 @@ def main() -> None:
             "api_key": search_api_key,
         }
         llm_settings = {
-            "enabled": llm_enabled,
+            "enabled": enable_llm,
             "extraction_model": extraction_model,
             "analysis_model": analysis_model,
             "api_key": groq_api_key,
@@ -3783,7 +3742,7 @@ def main() -> None:
             "api_key": search_api_key,
         }
         llm_settings = {
-            "enabled": llm_enabled,
+            "enabled": enable_llm,
             "extraction_model": extraction_model,
             "analysis_model": analysis_model,
             "api_key": groq_api_key,
@@ -4138,8 +4097,10 @@ def main() -> None:
     certificate_text = results.get("certificate_text", "")
     if not file_results and not certificate_text:
         st.info("No document content available for Q&A.")
-    elif not llm_enabled:
-        st.info("Set `GROQ_API_KEY` (Streamlit Secrets or env var) to use Q&A.")
+    elif not enable_llm:
+        st.info("Enable LLM extraction + classification to use Q&A.")
+    elif not groq_api_key:
+        st.warning("GROQ API key not found in .env.")
     else:
         scope_options = ["All documents"]
         scope_map = {"All documents": "all"}
