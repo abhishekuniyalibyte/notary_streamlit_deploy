@@ -1,0 +1,204 @@
+{
+  "Acrisound": {
+    "source_file": "ACRISOUND.xlsx",
+    "entry_count": 9,
+    "entries": [
+      {
+        "raw_name": "ACRISOUND SA. Certificado contable legalizado",
+        "description": "accounting certificate, with notarized signatures, legalized and apostilled",
+        "type_raw": "pdf",
+        "expected_extensions": [
+          "pdf"
+        ],
+        "candidate_filenames": [
+          "ACRISOUND SA. Certificado contable legalizado",
+          "ACRISOUND SA. Certificado contable legalizado.pdf"
+        ],
+        "matched_path": "ACRISOUND SA. Certificado contable legalizado.pdf",
+        "matched_filename": "ACRISOUND SA. Certificado contable legalizado.pdf",
+        "matched_extension": "pdf",
+        "match_status": "exact",
+        "match_method": "exact",
+        "match_score": 1.0,
+        "candidate_used": "ACRISOUND SA. Certificado contable legalizado.pdf",
+        "type_mismatch": false
+      },
+      {
+        "raw_name": "Acrisound SA. Certificado Contador legalizado",
+        "description": "accounting certificate, with notarized signatures, legalized and apostilled",
+        "type_raw": "pdf",
+        "expected_extensions": [
+          "pdf"
+        ],
+        "candidate_filenames": [
+          "Acrisound SA. Certificado Contador legalizado",
+          "Acrisound SA. Certificado Contador legalizado.pdf"
+        ],
+        "matched_path": "Acrisound SA. Certificado Contador del 9.03.20, Legalizado.pdf",
+        "matched_filename": "Acrisound SA. Certificado Contador del 9.03.20, Legalizado.pdf",
+        "matched_extension": "pdf",
+        "match_status": "fuzzy",
+        "match_method": "fuzzy",
+        "match_score": 0.88,
+        "candidate_used": "Acrisound SA. Certificado Contador legalizado.pdf",
+        "type_mismatch": false
+      },
+      {
+        "raw_name": "ACRISOUND. Certificacion legalizada y apostillada",
+        "description": "Notarial certificate of legal standing and representation, legalized and apostilled",
+        "type_raw": "pdf",
+        "expected_extensions": [
+          "pdf"
+        ],
+        "candidate_filenames": [
+          "ACRISOUND. Certificacion legalizada y apostillada",
+          "ACRISOUND. Certificacion legalizada y apostillada.pdf"
+        ],
+        "matched_path": "ACRISOUND. Certificacion legalizada y apostillada.pdf",
+        "matched_filename": "ACRISOUND. Certificacion legalizada y apostillada.pdf",
+        "matched_extension": "pdf",
+        "match_status": "exact",
+        "match_method": "exact",
+        "match_score": 1.0,
+        "candidate_used": "ACRISOUND. Certificacion legalizada y apostillada.pdf",
+        "type_mismatch": false
+      },
+      {
+        "raw_name": "Apostilla y legalizacion - Declaratoria, etc",
+        "description": "Declaration under Law 17904, which notifies the registry of the company's current officers. Each change of officers must be reported to the Registry. It was granted abroad, therefore it must be translated, accompanied by a Uruguayan notarized certificate verifying legal capacity and representation, and notarized (that is, incorporated into a notary's register of notarizations).",
+        "type_raw": "pdf",
+        "expected_extensions": [
+          "pdf"
+        ],
+        "candidate_filenames": [
+          "Apostilla y legalizacion - Declaratoria, etc",
+          "Apostilla y legalizacion - Declaratoria, etc.pdf"
+        ],
+        "matched_path": "Apostilla y legalización - Declaratoria, etc.pdf",
+        "matched_filename": "Apostilla y legalización - Declaratoria, etc.pdf",
+        "matched_extension": "pdf",
+        "match_status": "normalized",
+        "match_method": "normalized",
+        "match_score": 0.95,
+        "candidate_used": "Apostilla y legalizacion - Declaratoria, etc",
+        "type_mismatch": false
+      },
+      {
+        "raw_name": "Certificacion personeria, leyes 18930 y 19484 y unica accionista",
+        "description": "scanned notarized certificate of legal standing and representation, also controlling the shareholder",
+        "type_raw": "pdf",
+        "expected_extensions": [
+          "pdf"
+        ],
+        "candidate_filenames": [
+          "Certificacion personeria, leyes 18930 y 19484 y unica accionista",
+          "Certificacion personeria, leyes 18930 y 19484 y unica accionista.pdf"
+        ],
+        "matched_path": "Certificacion personeria, leyes 18930 y 19484 y unica accionista.pdf",
+        "matched_filename": "Certificacion personeria, leyes 18930 y 19484 y unica accionista.pdf",
+        "matched_extension": "pdf",
+        "match_status": "exact",
+        "match_method": "exact",
+        "match_score": 1.0,
+        "candidate_used": "Certificacion personeria, leyes 18930 y 19484 y unica accionista.pdf",
+        "type_mismatch": false
+      },
+      {
+        "raw_name": "025 certificado para Abitab",
+        "description": "Notarial certificate for ABITAB verifying legal status and representation and authorization to request a digital certificate",
+        "type_raw": "word",
+        "expected_extensions": [
+          "doc",
+          "docx",
+          "pages"
+        ],
+        "candidate_filenames": [
+          "025 certificado para Abitab",
+          "025 certificado para Abitab.docx",
+          "025 certificado para Abitab.doc",
+          "025 certificado para Abitab.pages"
+        ],
+        "matched_path": "025 certificado para Abitab.pages",
+        "matched_filename": "025 certificado para Abitab.pages",
+        "matched_extension": "pages",
+        "match_status": "exact",
+        "match_method": "exact",
+        "match_score": 1.0,
+        "candidate_used": "025 certificado para Abitab.pages",
+        "type_mismatch": false
+      },
+      {
+        "raw_name": "ACRISOUND SA. Certificacion Federico Schindler, para suprema corte",
+        "description": "Extension of notarial certificate, controlling missing information in another notarial certificate and required by the Supreme Court of Justice",
+        "type_raw": "word",
+        "expected_extensions": [
+          "doc",
+          "docx",
+          "pages"
+        ],
+        "candidate_filenames": [
+          "ACRISOUND SA. Certificacion Federico Schindler, para suprema corte",
+          "ACRISOUND SA. Certificacion Federico Schindler, para suprema corte.docx",
+          "ACRISOUND SA. Certificacion Federico Schindler, para suprema corte.doc",
+          "ACRISOUND SA. Certificacion Federico Schindler, para suprema corte.pages"
+        ],
+        "matched_path": "ACRISOUND SA. Certificacion Federico Schindler, para suprema corte.doc",
+        "matched_filename": "ACRISOUND SA. Certificacion Federico Schindler, para suprema corte.doc",
+        "matched_extension": "doc",
+        "match_status": "exact",
+        "match_method": "exact",
+        "match_score": 1.0,
+        "candidate_used": "ACRISOUND SA. Certificacion Federico Schindler, para suprema corte.doc",
+        "type_mismatch": false
+      },
+      {
+        "raw_name": "ACRISOUND SA. Certificacion firma Federico Schindler, por poder, personeria, representación, poder general y leyes",
+        "description": "Notarial certificate of signatures and verification of legal personality and representation",
+        "type_raw": "word",
+        "expected_extensions": [
+          "doc",
+          "docx",
+          "pages"
+        ],
+        "candidate_filenames": [
+          "ACRISOUND SA. Certificacion firma Federico Schindler, por poder, personeria, representación, poder general y leyes",
+          "ACRISOUND SA. Certificacion firma Federico Schindler, por poder, personeria, representación, poder general y leyes.docx",
+          "ACRISOUND SA. Certificacion firma Federico Schindler, por poder, personeria, representación, poder general y leyes.doc",
+          "ACRISOUND SA. Certificacion firma Federico Schindler, por poder, personeria, representación, poder general y leyes.pages"
+        ],
+        "matched_path": "ACRISOUND SA. Certificacion firma Federico Schindler, por poder, personeria, representación, poder general y leyes.doc",
+        "matched_filename": "ACRISOUND SA. Certificacion firma Federico Schindler, por poder, personeria, representación, poder general y leyes.doc",
+        "matched_extension": "doc",
+        "match_status": "exact",
+        "match_method": "exact",
+        "match_score": 1.0,
+        "candidate_used": "ACRISOUND SA. Certificacion firma Federico Schindler, por poder, personeria, representación, poder general y leyes.doc",
+        "type_mismatch": false
+      },
+      {
+        "raw_name": "ACRISOUND SA. Certificacion personeria, leyes 18930, 19484 y unica Accionista y beneficiario final",
+        "description": "Notarial certificate of legal personality and representation, also controlling its sole Shareholder and ultimate beneficiary",
+        "type_raw": "word",
+        "expected_extensions": [
+          "doc",
+          "docx",
+          "pages"
+        ],
+        "candidate_filenames": [
+          "ACRISOUND SA. Certificacion personeria, leyes 18930, 19484 y unica Accionista y beneficiario final",
+          "ACRISOUND SA. Certificacion personeria, leyes 18930, 19484 y unica Accionista y beneficiario final.docx",
+          "ACRISOUND SA. Certificacion personeria, leyes 18930, 19484 y unica Accionista y beneficiario final.doc",
+          "ACRISOUND SA. Certificacion personeria, leyes 18930, 19484 y unica Accionista y beneficiario final.pages"
+        ],
+        "matched_path": "ACRISOUND SA. Certificacion personeria, leyes 18930, 19484 y unica Accionista y beneficiario final.doc",
+        "matched_filename": "ACRISOUND SA. Certificacion personeria, leyes 18930, 19484 y unica Accionista y beneficiario final.doc",
+        "matched_extension": "doc",
+        "match_status": "exact",
+        "match_method": "exact",
+        "match_score": 1.0,
+        "candidate_used": "ACRISOUND SA. Certificacion personeria, leyes 18930, 19484 y unica Accionista y beneficiario final.doc",
+        "type_mismatch": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+Notarial Chatbot Flow - Detailed Analysis Report
+Generated: 2026-02-11T11:46:40
+============================================================
+SUMMARY OF ANALYSIS
+--------------------
+Subject: NEXLOG URUGUAY S.A.
+Total Files Processed: 1
+Documents Found: firma_personeria_representacion_representacion
+Uploaded Files Status: VALID
+Case Completeness Status: VALID
+
+File Errors Found: No (0 files affected)
+Missing Required Documents: None
+Attention Reasons: None
+============================================================
+
+Details: CERTIFICACION DE FIRMA ANNA FERREYRA. CONTROLCOMPLETO SA. PARA FIRMA DIGITAL ABITAB.docx
+Type: firma_personeria_representacion_representacion (source: content)
+Validation: valid - Document passes validation checks.
+--------------------------------------------------------------------------------

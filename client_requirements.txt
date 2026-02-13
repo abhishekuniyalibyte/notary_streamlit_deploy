@@ -1,0 +1,193 @@
+Pain
+Creation of notarial certificates requires multiple processes depending on the certificate type, each with its own specific steps. The complexity varies according to the case, for example expired BPS certificates, among others.
+Process
+When document X is uploaded, the agent must be able to read it and interpret Uruguayan law to determine whether all legal requirements are met. Based on these requirements, it must verify the validity of the information and whether it is up to date.
+A flow:
+• The agent already has all the relevant information loaded into its knowledge base regarding how notaries must operate and how documents must be delivered. This includes the Organic Law and the Notarial Regulations. https://www.aeu.org.uy/aucdocumento.aspx?996,13853
+• The notary specifies the certificate that needs to be created (its type and purpose, such as certifying signatures or legal situations).
+• The notary uploads the available documentation needed to create the certificate, either via Drive integration or direct upload.
+• The agent compares the uploaded documentation with its knowledge base to identify missing documents, outdated documents, or documents containing incorrect information.
+• The notary then chooses between uploading the updated documents or instructing the agent to attempt to update them using APIs or public/private websites that may contain updated information.
+• The agent attempts to update the information and informs whether the update was successful or not, marking in red the items that were found and those that were changed.
+• The agent analyses all the information uploaded by the notary.
+• Once all the required elements are validated and corrected, the agent generates the certificate using a predefined template provided by the notary.
+• The notary confirms whether everything is correct so the agent can learn or adjust its output if the notary indicates that something is not correct (for example, wording or template structure). This may involve updating the template or improving its programming.
+Example
+If the notary wants to certify a signature, the agent must be able to reference Article 250, which refers to Article 130, and verify all required documents according to those articles, as well as everything contained in Article 255. All notarial certificates must comply with Articles 248 to 255, including cross-references.
+It is important that the entire process can be done from a mobile phone (this will be another stage - frontend development)
+Title examination
+When a person wants to buy a property, the notary must verify that the seller is the legitimate owner and that the property has no encumbrances. This requires registry information, municipal records, and data from public agencies. This is based on notarial requirements outlined here: https://publicaciones.fder.edu.uy/index.php/me/article/view/128/121
+
+
+above are the requirements and the reply to how we are going to do this:
+
+---
+
+Below is my response(HS):
+
+This absolutely helps clarify the scope. I’ve reviewed the full flow carefully, and yes, I’m fully capable of developing this agent end-to-end.
+Here is exactly how I would approach it:
+1. Authentication + Google Drive Integration
+I’ll integrate your existing login (email/Google OAuth) and connect each notary’s Google Drive so the agent can securely read their past documents (PDF, DOCX, JPG). OCR will be applied where needed.
+2. Legal Knowledge Base (Spanish-only prompts as requested)
+I will load all legal content from the provided URL, especially the rules from “Certificates” and Article 255, into a structured retrieval-augmented knowledge base so the agent can always apply the correct legal requirements.
+3. Template & Style Learning
+Each notary has a personal writing style, so the agent will scan their Drive for previous certificates, extract their formatting, tone, and structure, and use those as references for future certificates. If the notary uploads custom templates for each institution (BPS, MSP, Abitab, etc.), the agent will follow them strictly.
+4. Intelligent Search + Data Extraction
+When the notary asks for a certificate (example: “Quiero crear un certificado de personería de EMARLAN SOCIEDAD ANÓNIMA para Abitab”), the agent will:
+– Search Drive for EMARLAN documents
+– Extract required legal fields
+– Detect missing, outdated, or unclear items
+– Present all extracted information to the notary for correction or confirmation
+5. Institution-Specific Requirements
+If the certificate is “para BPS”, “para MSP”, etc., the agent will either:
+– Use the uploaded templates, or
+– (Later phase) search the internet for official guidelines
+It will also validate things like expiration dates or institution-specific formatting rules.
+6. Certificate Generation + Error Checking
+The agent will draft the certificate fully in Spanish using the chosen template and legal rules, highlight any problems (expired data, mismatches, unreadable names), and ask the notary to review or correct them.
+7. Final Output
+Once the notary approves, the agent will generate the final document (PDF/DOCX) ready for download. A future roadmap can include automatic upload to the governmental portal.
+
+---
+
+Client Response after giving the folders:
+Each folder is a costumer ( company or a person ), if you see the word ERROR at the beginning of a certificate is because the notary saw issues with the data / conditions
+And you can see a lot of examples of certificates created per customer
+Cool! Check the docs and let me know
+Everything is in Spanish
+ 
+
+---
+
+9:34 pm, 22/12/2025] Gitesh Sir: 
+To finalize the flow correctly though the provided documents are very helpful but I need few clarifications:
+1. What are the certificate types the system should support?
+(e.g. certification of signatures, certification of facts, ratification, personería, BPS, etc.) 
+Every type , meaning , each type has its own requirements, if the agent cannot find those requirements online it has to ask the notary to include the requirements doc
+2. Will the notary always select the certificate type, or should the system try to infer it from the uploaded documents?
+The notary should specify which certificate he wants. The agent could look for  examples of that same certificate in the notary drive ( for sure he did at least one in the past ) 
+3.  Files that start with “ERROR”:
+• Are these certificates that were legally invalid?
+• Or drafts that failed some requirement and need correction?
+Exactly, they failed some requirement and need correction.
+4.  For each certificate type, is there a fixed list of required documents, or does it vary case by case?
+Each certificate type has a fix list of requirements 
+5. Which documents should be treated as expirable (ID, BPS, powers, statutes, etc.)?
+All that have expirable dates and are needed to be valid during the generation of the certificate
+ 
+6. Are certificate templates fixed, or can each notary modify wording and structure?
+Can modify
+
+
+[9:34 pm, 22/12/2025] Gitesh Sir: Hey!!
+[9:34 pm, 22/12/2025] Gitesh Sir: You need to check these words  resoluciÃ³n
+[9:35 pm, 22/12/2025] Gitesh Sir: Ã³ is an error of the ocr , it should be ó
+[9:35 pm, 22/12/2025] Gitesh Sir: So instead of resoluciÃ³n, the correct word is resolución
+[9:35 pm, 22/12/2025] Gitesh Sir: I see the same error around the output
+[9:35 pm, 22/12/2025] Gitesh Sir: The “tildes”
+[9:35 pm, 22/12/2025] Gitesh Sir: To finalize the flow correctly though the provided documents are very helpful but I need few clarifications:
+1. What are the certificate types the system should support?
+(e.g. certification of signatures, certification of facts, ratification, personería, BPS, etc.) 
+Every type , meaning , each type has its own requirements, if the agent cannot find those requirements online it has to ask the notary to include the requirements doc
+2. Will the notary always select the certificate type, or should the system try to infer it from the uploaded documents?
+The notary should specify which certificate he wants. The agent could look for  examples of that same certificate in the notary drive ( for sure he did at least one in the past ) 
+3.  Files that start with “ERROR”:
+* Are…
+[9:35 pm, 22/12/2025] Gitesh Sir: Please le me know if you have more doubts
+[9:35 pm, 22/12/2025] Gitesh Sir: We can have a zoom meeting to validate requirements, and speak with the notary
+
+
+---
+23-dec - milestone that we have share with client
+
+Milestone 1 – Certificate and Document Structuring
+Objective
+The objective of this milestone is to organize and structure the notary’s existing archive in order to understand how certificates are created in real practice. This milestone establishes a reliable foundation for all future automation.
+Deliverables
+Structured customer dataset
+All customer folders will be analyzed and represented in a structured format. Each customer (person or company) will have a clear record of all associated files.
+
+Certificate and document separation
+All files will be classified into notarial certificates and supporting documents. Certificates that were previously marked as ERROR by the notary will be clearly identified as failed or incomplete drafts.
+
+Certificate inventory
+A complete inventory of all certificates previously created by the notary will be produced. This will allow visibility into how many certificates exist, how often they are used, and how many attempts failed due to unmet requirements.
+
+Normalized certificate types
+All certificate filenames will be normalized and grouped into a finite list of certificate types. Multiple variations of the same certificate (for example, different wording or destinations) will be grouped under one standardized certificate type.
+
+Traceability and reporting
+It will be possible to see which certificates were created for each customer and which certificates required correction. A summary report will explain the structure of the notary’s historical work and validate readiness for the next milestone.
+
+ 
+Milestone 2 - Legal Validation and Document Intelligence
+Objective
+The objective of this milestone is to assist the notary in verifying that all legal and documentary requirements for a selected certificate type are met before issuing the certificate.
+Deliverables
+Certificate type to legal rule mapping
+Each certificate type identified in Milestone 1 will be explicitly mapped to the applicable articles of the Organic Law, including Articles 248 to 255 and any required cross references. This mapping will be fixed, auditable, and approved by the notary.
+
+Certificate requirement definitions
+For each certificate type, a fixed list of required documents will be defined. These requirements will reflect both legal rules and established notarial practice.
+
+Document analysis engine
+The system will be able to read uploaded documents such as PDFs, Word files, and scanned documents. Relevant information such as names, dates, entities, powers, and identifiers will be extracted.
+
+Validation and issue detection
+The system will verify whether all required documents are present, whether any document is expired, and whether the information across documents is consistent. Any detected issues will be clearly explained.
+
+Error feedback and correction support
+When requirements are not met, the system will clearly indicate what is missing, outdated, or incorrect. The notary will be able to correct issues by uploading updated documents or retrying the validation process.
+
+ 
+Milestone 3 - Certificate Draft Generation and Continuous Improvement
+Objective
+The objective of this milestone is to generate high quality notarial certificate drafts and continuously improve them based on notary feedback.
+Deliverables
+Certificate templates
+Templates will be created for each certificate type. Each template will clearly separate fixed legal text from variable fields such as names, dates, and references.
+
+Automated certificate draft generation
+Based on validated documents, the system will generate certificate drafts with all available data automatically filled in. Drafts will be produced in editable formats such as Word and PDF.
+
+Notary review and approval workflow
+Each generated certificate will be reviewed by the notary. The notary will be able to modify wording, structure, or formatting before approving the final version.
+
+Learning from notary corrections
+Corrections and edits made by the notary will be recorded. Over time, templates and generation logic will improve to better match the notary’s preferred drafting style.
+
+Production ready outputs
+The system will generate consistent, legally compliant certificates ready for real use. The solution will be prepared for future frontend or mobile integration.
+
+---
+                        5-JAN-2026 CLIENT REPONSE on create_certificate_summary.py file json output 
+
+[05/01, 5:16 pm] Himanshi TL Office: corte.doc"
+      ]
+    },
+    "firma": {
+      "count": 28,
+      "purposes": {
+        "zona_franca": 2,
+        "bcu": 2
+      },
+      "attributes": [],
+      "examples": [
+        "AMURA ADVISORS INTERNATIONAL SA. CertificaciÃ³n firma Walter Albanell, control SA, para contrato Zona Franca.doc",
+        "ALBANELL BOCAGE Walter. CertificaciÃ³n FIRMA y Estado de Responsabilidad, para BSE.doc",
+        "ALBANELL OLARREAGA Walter Federico. CertificaciÃ³n FIRMA y Estado de Responsabilidad, para BSE..doc",
+        "CertificacioÌn FIRMA de Walter Federico Albanell por AMURA, control sociedad y datos. para ABITAB.doc",
+        "CertificacioÌn firma digital de Walter Federico Albanell por AMURA, control sociedad y datos. para ABITAB.doc"
+      ]
+    },
+[05/01, 5:16 pm] Himanshi TL Office: Purpose is wrong , it should be for BSE , abitab and zona franca
+[05/01, 5:16 pm] Himanshi TL Office: 2 abitab, 2 BSE and 1 zona franca
+[05/01, 5:16 pm] Himanshi TL Office: In the example section
+[05/01, 5:16 pm] Himanshi TL Office: Those are DGI certificates but not notary ones
+[05/01, 5:16 pm] Himanshi TL Office: Remember , The ones with ERROR word are certificates but with wrong data
+[05/01, 5:16 pm] Himanshi TL Office: You need to analyse the content too , not only the file name
+[05/01, 5:16 pm] Himanshi TL Office: We can have a meeting on Wednesday 7 or Thursday 8 with the notary tomorrow
+
+---
+

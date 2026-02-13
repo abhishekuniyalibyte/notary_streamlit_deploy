@@ -1,0 +1,325 @@
+NOTARIA_PROJECT — Codebase Flow (Dataset → App → Outputs)
+Date: 2026-02-11
+
+This note explains the repo end-to-end, step-by-step:
+1) what you did first on the client dataset (`Notaria_client_data/`)
+2) what happens next in the systematic runtime flow (Streamlit app → Phases 1–11)
+
+
+===============================================================================
+0) REPO MAP (what lives where)
+===============================================================================
+
+Entry point (UI + orchestration)
+- `chatbot.py`
+  - Streamlit app (Form + Chat-guided UI).
+  - Loads dataset summary (`certificate from dataset/certificate_summary.json`) + optional client catalogs.
+  - Runs the full pipeline via `run_flow(...)` (Phases 1–11).
+
+Core pipeline modules (each “phase” is its own file)
+- `src/phase1_certificate_intent.py` (Intent capture)
+- `src/phase2_legal_requirements.py` (Rules engine: articles + required docs)
+- `src/phase3_document_intake.py` (File intake + basic type detection + catalog matching)
+- `src/phase4_text_extraction.py` (Text/OCR extraction + regex field extraction + normalization)
+- `src/phase5_legal_validation.py` (Validation matrix + article compliance checks)
+- `src/phase6_gap_detection.py` (Missing/expired/inconsistent gaps + action plan)
+- `src/phase7_data_update.py` (Update session + system corrections)
+- `src/phase8_final_confirmation.py` (Final go/no-go decision)
+- `src/phase9_certificate_generation.py` (Draft certificate generation)
+- `src/phase10_notary_review.py` (Notary review + edits + feedback)
+- `src/phase11_final_output.py` (Final certificate packaging + metadata + exports)
+
+Supporting “intelligence” modules
+- `src/error_pattern_analyzer.py` + `config/error_patterns.json`
+  - Learns/uses known “ERROR folder” patterns (date impossibilities, format issues, etc.).
+  - Converts pattern matches into Phase 6 gaps (semantic_error).
+- `src/smart_auto_fix.py`
+  - Conservative auto-fix logic (consistency + some date-logic fixes).
+- `src/document_writer.py`
+  - Generates “fixed outputs” (PDF/DOCX/etc) from extracted text without modifying originals.
+
+Rules / law content
+- `config/certificate_requirements.json` (human-editable checklists used by parts of `chatbot.py`)
+- `articles/` (local article texts used by the validator; e.g. `article_130.txt`, `articles_248_255.txt`)
+
+Client-provided dataset folder
+- `Notaria_client_data/`
+  - This is the dataset the client gave you.
+  - Structure: `Notaria_client_data/<Customer Name>/<files...>`
+  - Current repo contains ~887 files under this folder.
+
+Dataset analysis / taxonomy outputs (built from the dataset)
+- `certificate from dataset/`
+  - `customers_index.json` (index of all historical files, grouped by customer)
+  - `certificate_types.json` (normalized type taxonomy based on keywords)
+  - `certificate_summary.json` (content-aware classification summary used by the app)
+  - `client_file_catalogs.json` (optional: imported from XLSX catalogs)
+  - scripts that produced the above (see Section 1)
+
+Outputs produced by the Streamlit app
+- `.tmp_uploads/` (where uploads are saved so they have stable local paths)
+- `output/runs/chat_case_<id>/` (reports: `notary_summary.txt`, `notary_detailed_report.txt`, `notary_phase_outputs.txt`)
+- `output/fixed/chat_case_<id>/` (downloadable “fixed” regenerated files)
+
+Project details from the client
+- `client_requirements.txt` (flow + milestones + client feedback from 2026-01-05)
+
+
+===============================================================================
+1) FIRST-TIME FLOW (what you did on the dataset: Notaria_client_data)
+===============================================================================
+
+Goal of the “dataset work”:
+- Turn the raw client folder (`Notaria_client_data/`) into a structured, searchable reference:
+  - Which customers exist
+  - Which files look like notarial certificates vs non-cert documents
+  - How to normalize “certificate types” (firma/personería/representación/…)
+  - Which “purpose/destination” (BSE/ABITAB/Zona Franca/BPS/DGI/BCU/…) is implied
+  - Keep track of ERROR files (certificates with wrong data)
+
+These dataset artifacts become the reference used by `chatbot.py` to:
+- match a newly uploaded file against historical patterns
+- suggest document types/purposes
+- flag “this looks like a pure authority doc (DGI/BPS/BCU) not a notarial certificate”
+
+
+Step 1.1 — Put the dataset in the expected folder
+- You created/copied/unzipped the client dataset into:
+  - `Notaria_client_data/`
+- Each customer has its own subfolder:
+  - e.g. `Notaria_client_data/Acrisound/`
+  - e.g. `Notaria_client_data/AMURA ADVISORS INTERNATIONAL SA/`
+
+
+Step 1.2 — Index every file (group by customer, basic cert vs non-cert split)
+Script:
+- `certificate from dataset/all_file_data.py`
+
+What it does:
+- Walks every customer folder recursively.
+- Heuristically classifies files by filename:
+  - filenames starting with `ERROR...` => treated as certificates with `error_flag=true`
+  - filenames containing “certif” => treated as certificates
+  - everything else => non_certificates
+
+Output:
+- `certificate from dataset/customers_index.json`
+  - Contains per-customer lists:
+    - `files.certificates[]`: `{ filename, relative_path, error_flag }`
+    - `files.non_certificates[]`: `{ filename, relative_path }`
+
+Note:
+- This step is filename-based and intentionally “fast but imperfect”.
+- The client feedback (2026-01-05) specifically said: “analyze content too, not only the file name” → that is addressed in Step 1.4.
+
+
+Step 1.3 — Build a “certificate type taxonomy” (normalized types + purposes + attributes)
+Script:
+- `certificate from dataset/normalize_certificates.py`
+
+What it does:
+- Reads `customers_index.json`.
+- Builds a first-pass “certificate_types.json” taxonomy based on keyword rules:
+  - base legal types (firma/personería/representación/…)
+  - purposes (bps/dgi/bcu/registro/zona franca/…)
+  - attributes (domicilio/objeto/giro/leyes/poder/…)
+
+Output:
+- `certificate from dataset/certificate_types.json`
+
+
+Step 1.4 — Build the “certificate_summary.json” using CONTENT (LLM + text extraction)
+Script:
+- `certificate from dataset/certificate_summary.py`
+  - Header comment shows it as `create_certificate_summary3.py - VERSION 3.1 (ENHANCED)`
+
+Why this exists (directly tied to client feedback in `client_requirements.txt`, 2026-01-05):
+- “Purpose is wrong…”
+- “Those are DGI certificates but not notary ones…”
+- “ERROR files are certificates but with wrong data…”
+- “You need to analyse the content too, not only the file name…”
+
+What it does:
+- Loads:
+  - `customers_index.json`
+  - `certificate_types.json`
+- For each file:
+  1) extracts first pages of text (OCR fallback) using `certificate from dataset/text_extractor.py`
+  2) calls Groq LLM to classify content into JSON:
+     - `is_notarial` true/false
+     - `certificate_type`: firma|personeria|representacion|poder|vigencia|control|otros|authority
+     - `purpose`: BSE|ABITAB|Zona Franca|Comercio|Registro|BCU|DGI|BPS|Other
+  3) applies extra hard rules to match client expectations:
+     - “pure authority docs” (DGI/BPS/BCU forms/certificados) should NOT become notarial certificates
+     - ERROR files stay notarial (unless they are pure authority)
+     - “COMPLETO/CONTROL” certs are complex and should be classified as combined types (not simple “firma”)
+
+Output:
+- `certificate from dataset/certificate_summary.json`
+  - Main sections:
+    - `identified_certificate_types` (counts + purposes + attributes + examples)
+    - `certificate_file_mapping` (type → file list with `{customer, filename, path, purpose, error_flag}`)
+    - `non_certificate_documents` (authority docs + other non-certs)
+
+
+Step 1.5 (Optional) — Import client Excel catalog(s) (per-customer expected file lists)
+Script:
+- `certificate from dataset/import_client_catalog.py`
+
+What it does:
+- Reads an XLSX (without Excel dependencies; it parses the XML inside the XLSX).
+- Matches catalog “File name” entries to real files in a customer folder (exact/normalized/fuzzy).
+- Writes/updates:
+  - `certificate from dataset/client_file_catalogs.json` (per-customer catalog entries)
+  - `certificate from dataset/customers_index.json` (adds a `catalogs` pointer under that customer)
+  - `certificate from dataset/certificate_summary.json` (adds `external_file_catalogs` section)
+
+Why it matters:
+- Improves filename expectations and mismatch warnings in the runtime app (Phase 3 metadata).
+
+
+===============================================================================
+2) NEXT SYSTEMATIC FLOW (runtime: Streamlit app → full pipeline)
+===============================================================================
+
+Goal of runtime flow:
+- A notary uploads (or selects) a set of documents for a specific certificate request.
+- The system extracts facts, validates them against legal requirements, flags gaps, optionally fixes safe issues,
+  and only generates a certificate draft when Phase 8 approves.
+
+
+Step 2.1 — Start the app (main entrypoint)
+File:
+- `chatbot.py`
+
+How it starts:
+- Loads dataset reference:
+  - `DEFAULT_SUMMARY_PATH = "certificate from dataset/certificate_summary.json"`
+  - `load_summary()` → `build_summary_index()` (creates filename + customer indexes)
+  - `build_llm_reference()` (compact taxonomy used for keyword/LLM matching)
+- Loads optional per-customer catalogs:
+  - `DEFAULT_CATALOG_PATH = "certificate from dataset/client_file_catalogs.json"`
+- Reads `.env` for `GROQ_API_KEY` if LLM features are enabled.
+
+
+Step 2.2 — Provide documents for a case
+In the UI you can:
+- Select from dataset folders: `Notaria_client_data/<Customer>/...`
+- Upload multiple files (stored in `.tmp_uploads/` so they can be processed repeatedly)
+- Provide a manual folder path
+
+
+Step 2.3 — Run the pipeline (`run_flow(...)` in chatbot.py)
+This is the “systematic flow” after you have files + intent.
+
+Phase 1 — Intent (src/phase1_certificate_intent.py)
+- Builds a `CertificateIntent` from:
+  - certificate_type, purpose/destination, subject name, subject type, notes
+
+Phase 2 — Legal requirements (src/phase2_legal_requirements.py)
+- `LegalRequirementsEngine.resolve_requirements(intent)` returns a structured checklist:
+  - mandatory articles (248–255 baseline + cross-references like Art. 130)
+  - required documents (mandatory vs optional, expiry windows, institution rules)
+
+Phase 3 — Document intake (src/phase3_document_intake.py)
+- Creates a `DocumentCollection` and adds documents.
+- Assigns:
+  - file format, size, “scanned?” guess
+  - detected document type (filename heuristics first)
+  - attaches matching catalog metadata (if `client_file_catalogs.json` has entries for that customer)
+
+Phase 4 — Text extraction + structured fields (src/phase4_text_extraction.py + LLM helpers in chatbot.py)
+- Extracts raw text:
+  - PDF: PyPDF2 text; if empty → OCR (pdf2image + tesseract)
+  - Images: OCR
+  - DOCX: python-docx
+  - DOC: via system tools when available
+- Normalizes Spanish mojibake/encoding (`TextNormalizer`)
+- Extracts fields with regex (`DataExtractor`): RUT/CI/dates/registro/etc
+- If Groq is enabled, `chatbot.py` also calls LLM extraction/classification and merges fields.
+
+Dataset matching (chatbot.py `match_document(...)`)
+- Uses `certificate_summary.json` indexes + LLM/keyword signals to decide:
+  - correct / not_found / needs_review / not_applicable
+- This is how the historical dataset influences runtime confidence and review flags.
+
+Error pattern analysis (src/error_pattern_analyzer.py)
+- Loads `config/error_patterns.json` and finds known bad patterns.
+- Adds those as semantic gaps (so they appear in the action list).
+
+Phase 5 — Validation matrix (src/phase5_legal_validation.py)
+- `LegalValidator.validate(requirements, extraction)`
+- Produces:
+  - per-document validation results
+  - element checks (required elements)
+  - cross-document issues
+  - article compliance checks (using texts in `articles/`)
+
+Phase 6 — Gap detection (src/phase6_gap_detection.py + extra semantic checks in chatbot.py)
+- `GapDetector.analyze(validation)` → actionable gaps:
+  - missing docs / expired / invalid / inconsistent / format / catalog mismatch / review required
+- Chat mode can add extra semantic validations:
+  - cross-document consistency (company name / RUT / CI)
+  - expiry checks where the date can be extracted
+
+Phase 7 — Update attempt + safe corrections (src/phase7_data_update.py)
+- Builds an update session from the gap report.
+- If “auto_fix” is enabled:
+  - applies conservative system corrections (only when the “correct” value exists in other uploaded docs)
+  - re-runs validation + gap detection
+
+Phase 8 — Final confirmation (src/phase8_final_confirmation.py)
+- Final go/no-go decision:
+  - APPROVED / APPROVED_WITH_WARNINGS / REJECTED / REQUIRES_REVIEW
+- Certificate generation only happens if Phase 8 approves.
+
+Phase 9 — Certificate generation (src/phase9_certificate_generation.py)
+- Generates a draft certificate in sections using substitutions (subject/purpose/articles/etc).
+
+Phase 10 — Notary review (src/phase10_notary_review.py)
+- Tracks edits + approval decision; designed for “human-in-the-loop”.
+
+Phase 11 — Final output (src/phase11_final_output.py)
+- Produces a final “package”:
+  - metadata + final text
+  - export hooks for PDF/DOCX/TXT/HTML/JSON
+
+
+Step 2.4 — Outputs saved to disk
+Reports:
+- `output/runs/chat_case_<id>/notary_summary.txt`
+- `output/runs/chat_case_<id>/notary_detailed_report.txt`
+- `output/runs/chat_case_<id>/notary_phase_outputs.txt`
+
+Fixed regenerated files (non-destructive):
+- `output/fixed/chat_case_<id>/...` (same filename + extension as original upload)
+
+
+===============================================================================
+3) HOW THIS MAPS TO client_requirements.txt (milestones)
+===============================================================================
+
+Milestone 1 — Document analysis + taxonomy
+- Implemented by:
+  - dataset scripts under `certificate from dataset/` (index + taxonomy + certificate_summary)
+  - runtime matching in `chatbot.py` using that summary
+
+Milestone 2 — Legal validation + document intelligence
+- Implemented by:
+  - Phases 2–8 (requirements → extraction → validation → gaps → updates → final confirmation)
+
+Milestone 3 — Draft generation + improvement loop
+- Implemented by:
+  - Phases 9–11 (generation → review → final output)
+
+
+===============================================================================
+4) NEXT PRACTICAL STEPS (systematic, from current repo state)
+===============================================================================
+
+1) Keep `Notaria_client_data/` as the canonical dataset root (mounted read-only in Docker).
+2) Keep `certificate from dataset/certificate_summary.json` updated if the dataset changes:
+   - regenerate customers_index → certificate_types → certificate_summary.
+3) Expand Phase 7 “verification sources” (currently: “web search fallback” is a stub in `chatbot.py`).
+4) Add Google Drive integration (mentioned in client_requirements.txt; not implemented in code yet).
+

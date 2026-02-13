@@ -1,0 +1,268 @@
+{
+  "otros": {
+    "count": 103,
+    "purposes": {},
+    "attributes": [
+      "poderes",
+      "leyes",
+      "poder"
+    ],
+    "examples": [
+      "025 Certificado 351.docx",
+      "Certif. notarial, control completo SA, estudio Guyer.pdf",
+      "ERROR 025 Certificado 351.pages",
+      "025 certificado para Abitab.pages",
+      "ACRISOUND SA. Certificacion Federico Schindler, para suprema corte.doc"
+    ]
+  },
+  "firma": {
+    "count": 28,
+    "purposes": {
+      "zona_franca": 2,
+      "bcu": 2
+    },
+    "attributes": [],
+    "examples": [
+      "AMURA ADVISORS INTERNATIONAL SA. Certificación firma Walter Albanell, control SA, para contrato Zona Franca.doc",
+      "ALBANELL BOCAGE Walter. Certificación FIRMA y Estado de Responsabilidad, para BSE.doc",
+      "ALBANELL OLARREAGA Walter Federico. Certificación FIRMA y Estado de Responsabilidad, para BSE..doc",
+      "Certificación FIRMA de Walter Federico Albanell por AMURA, control sociedad y datos. para ABITAB.doc",
+      "Certificación firma digital de Walter Federico Albanell por AMURA, control sociedad y datos. para ABITAB.doc"
+    ]
+  },
+  "representacion_representacion": {
+    "count": 8,
+    "purposes": {
+      "comercio": 2
+    },
+    "attributes": [
+      "leyes",
+      "poder"
+    ],
+    "examples": [
+      "Certif. notarial 2022-04 vigencia, representación embargo.pdf",
+      "Certificado vigencia y representación por poder de Federico Scheindler, legalizado.2.pdf",
+      "Certificado vigencia y representación por poder de Federico Scheindler, legalizado.pdf",
+      "GIRTEC S.A., CERTIFICACION PERSONERA, REPRESENTACION, PODER CAROLINA Y LEYES.doc",
+      "Certificacion representación y leyes.pdf"
+    ]
+  },
+  "dgi": {
+    "count": 3,
+    "purposes": {
+      "dgi": 3
+    },
+    "attributes": [],
+    "examples": [
+      "Certif.Anual. DGI.pdf",
+      "CERTIFICADO DGI FRAINEL.pdf",
+      "certificado NETKLA TRADING - DGI.doc"
+    ]
+  },
+  "personeria_representacion_representacion": {
+    "count": 61,
+    "purposes": {
+      "bps": 2,
+      "dgi": 4,
+      "bcu": 1,
+      "comercio": 1
+    },
+    "attributes": [
+      "poderes",
+      "leyes",
+      "domicilio",
+      "poder",
+      "giro",
+      "domicilios",
+      "objeto"
+    ],
+    "examples": [
+      "Certificación de personería y representación AMURA ADVISORS INTERNATIONAL S.A. - 2023.docx",
+      "ACRISOUND SA. Certificacion personeria, representación y leyes, complemento poder Brasil.doc",
+      "ACRISOUND SA. Certificacion personeria, representación y leyes.doc",
+      "ACRISOUND SA. Certificacion personeria, representación, poder general y leyes.doc",
+      "Certificacion personeria, representacion y leyes. Legalizada y Apostillada..pdf"
+    ]
+  },
+  "bps": {
+    "count": 8,
+    "purposes": {
+      "bps": 8,
+      "dgi": 2
+    },
+    "attributes": [],
+    "examples": [
+      "Certificado comun BPS.pdf",
+      "Formulario 0352 ACRISOUND SA Certificacion cambio Directorio, para BPS-DGI.pdf",
+      "CERTIFICADO BPS GIRTEC VTO 13 01 2021.pdf",
+      "AMPLIACION CERTIFICACION. PARA BPS-DGI.docx",
+      "Constancia Certif.Comun BPS.pdf"
+    ]
+  },
+  "firma_personeria_representacion_representacion": {
+    "count": 72,
+    "purposes": {
+      "bcu": 6,
+      "bps": 5,
+      "dgi": 6,
+      "zona_franca": 2,
+      "comercio": 1
+    },
+    "attributes": [
+      "poderes",
+      "giro",
+      "leyes",
+      "domicilio",
+      "poder",
+      "domicilios"
+    ],
+    "examples": [
+      "ACRISOUND SA. Certificacion firma Federico Schindler, por poder, personeria, representación, poder general y leyes.doc",
+      "Certificación FIRMA de Walter Federico Albanell por AMURA, personeria, representación. para BS.doc",
+      "CERTIFICACION DE FIRMA, PERSONERIA, REPRESENTACION, LEYES, DOMICILIOS.doc",
+      "CERTIFICACION DE FIRMA, PERSONERIA, REPRESENTACION, LEYES, DOMICILIOS.pages",
+      "ERROR CERTIFICACION DE FIRMA, PERSONERIA, REPRESENTACION, LEYES, DOMICILIOS.pages"
+    ]
+  },
+  "personeria": {
+    "count": 8,
+    "purposes": {},
+    "attributes": [
+      "leyes"
+    ],
+    "examples": [
+      "ACRISOUND SA. Certificacion personeria, leyes 18930, 19484 y unica Accionista y beneficiario final.doc",
+      "ACRISOUND SA. Certificacion personeria, leyes 18930, 19484 y unica Accionista.doc",
+      "Certificacion personeria, leyes 18930 y 19484 y unica accionista.pdf",
+      "Certificación control personería completo general.doc.docx",
+      "Certificación control personería completo, para ABITAB.doc"
+    ]
+  },
+  "comercio": {
+    "count": 3,
+    "purposes": {
+      "comercio": 3
+    },
+    "attributes": [],
+    "examples": [
+      "Certif. Comercio legalizado.pdf",
+      "Certificado Reg.Comercio legalizado.pdf",
+      "legalizacion de certificado de comercio.pdf"
+    ]
+  },
+  "firma_firmas": {
+    "count": 17,
+    "purposes": {
+      "dgi": 3,
+      "bcu": 1,
+      "bps": 1
+    },
+    "attributes": [
+      "poder"
+    ],
+    "examples": [
+      "certificado de firmas 352 DGI ACRISOUND SA.docx",
+      "certificado de firmas 352 DGI.docx",
+      "certificado notarial de firmas carta poder ACRISOUND SA junio 2025.docx",
+      "ALBANELL OLARREAGA Walter Federico y  WALTER BOCAGE Walter Carlos. Certificación FIRMAS.doc",
+      "Autorizacion y certificacion de firmas.pdf"
+    ]
+  },
+  "registro": {
+    "count": 3,
+    "purposes": {
+      "registro": 3,
+      "comercio": 2
+    },
+    "attributes": [
+      "leyes"
+    ],
+    "examples": [
+      "certificado para levantar observacion del registro declaratoria 17904.docx",
+      "CERTIFICACIONES LEYES 18930 Y 19484, PARA REGISTRO COMERCIO.doc",
+      "Certificado Registro Comercio.pdf"
+    ]
+  },
+  "firma_firmas_personeria_representacion_representacion": {
+    "count": 2,
+    "purposes": {
+      "comercio": 1
+    },
+    "attributes": [
+      "leyes"
+    ],
+    "examples": [
+      "Certificación FIRMAS y control personeria y representacion.doc",
+      "CERTIFICACION FIRMAS FABIAN Y CECILIA ALVAREZ, PERSONERIA, REPRESENTACION, LEYES Y OTROS DATOS. para CAMARA COMERCIO URU-PARAGUAY.docx"
+    ]
+  },
+  "bcu": {
+    "count": 5,
+    "purposes": {
+      "bcu": 5
+    },
+    "attributes": [],
+    "examples": [
+      "Certificado de Recepcion. BCU.pdf",
+      "Inv. Rinlen. certificado recepcion BCU.pdf",
+      "Comunicacion BCU. Certif.Recepcion y Form.B.pdf",
+      "Scotiabank Uruguay S.A.- Certificado BCU.PDF",
+      "Scotiabank Uruguay S.A.- Certificado BCU.pdf"
+    ]
+  },
+  "firma_personeria": {
+    "count": 10,
+    "purposes": {
+      "bcu": 4,
+      "bps": 2,
+      "dgi": 2
+    },
+    "attributes": [
+      "giro",
+      "domicilio",
+      "poder",
+      "leyes",
+      "domicilios"
+    ],
+    "examples": [
+      "CERTIFICACION DE FIRMA SOCIO FUNDADOR, CONTROL PERSONERIA, PARA BCU.doc",
+      "CERTIFICACION DE FIRMA POR PODER,  PERSONERIA, NUEVOS DOMICILIOS Y GIRO, PARA BPS-DGI.docx",
+      "CERTIFICACION firma Claudio por poder, personeria completa, leyes, para RUPE.docx",
+      "CERTIFICACION FIRMA Y PERSONERIA,  CAMBIO DIRECTORIO. PARA bps-dgi.docx",
+      "CERTIFICACION DE FIRMA  JAVIER BASSI POR ESTATUTO,  PERSONERIA, CAMBIO DENOMINACION, LEY 17904, PARA BCU.docx"
+    ]
+  },
+  "firma_representacion_representacion": {
+    "count": 1,
+    "purposes": {},
+    "attributes": [
+      "leyes",
+      "poder"
+    ],
+    "examples": [
+      "GIRTEC S.A., CERTIFICACION FIRMA CAROLINA BOMIO POR PODER. PERSONERA, REPRESENTACION Y LEYES.doc"
+    ]
+  },
+  "zona_franca": {
+    "count": 2,
+    "purposes": {
+      "zona_franca": 2
+    },
+    "attributes": [],
+    "examples": [
+      "certificado NETKLA TRADING ZONA FRANCA 2.doc",
+      "certificado NETKLA TRADING ZONA FRANCA.doc"
+    ]
+  },
+  "firma_firmas_representacion_representacion": {
+    "count": 1,
+    "purposes": {},
+    "attributes": [
+      "poderes",
+      "poder"
+    ],
+    "examples": [
+      "SISTEMAS ELECTRONICOS AVANZADOS SA. CERTIF.FIRMAS, REPRESENTACIÓN, PODERES, PARA BROU.doc"
+    ]
+  }
+}

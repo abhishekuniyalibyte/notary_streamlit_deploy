@@ -1,0 +1,73 @@
+{
+  "patterns": [
+    {
+      "pattern_id": "date_statute_before_constitution",
+      "pattern_type": "date_inconsistency",
+      "description": "Estatuto aprobado antes de la constitución de la empresa",
+      "detection_rule": "statute_approval_date < company_constitution_date",
+      "severity": "critical",
+      "example_cases": [
+        {
+          "company": "INVERSORA RINLEN S.A.",
+          "constitution_date": "2007-05-24",
+          "statute_date": "2000-12-08",
+          "error": "Estatuto 7 años antes de constitución"
+        }
+      ],
+      "occurrence_count": 1,
+      "false_positive_rate": 0.0,
+      "created_at": "2026-02-02T16:13:26.107800",
+      "last_seen": "2026-02-02T16:13:26.107809"
+    },
+    {
+      "pattern_id": "date_registration_before_constitution",
+      "pattern_type": "date_inconsistency",
+      "description": "Registro antes de la constitución de la empresa",
+      "detection_rule": "registration_date < company_constitution_date",
+      "severity": "critical",
+      "example_cases": [],
+      "occurrence_count": 0,
+      "false_positive_rate": 0.0,
+      "created_at": "2026-02-02T16:13:26.107815",
+      "last_seen": "2026-02-02T16:13:26.107816"
+    },
+    {
+      "pattern_id": "date_acta_before_constitution",
+      "pattern_type": "date_inconsistency",
+      "description": "Acta de directorio fechada antes de la constitución",
+      "detection_rule": "acta_date < company_constitution_date",
+      "severity": "error",
+      "example_cases": [],
+      "occurrence_count": 0,
+      "false_positive_rate": 0.0,
+      "created_at": "2026-02-02T16:13:26.107819",
+      "last_seen": "2026-02-02T16:13:26.107821"
+    },
+    {
+      "pattern_id": "date_very_old_document",
+      "pattern_type": "expired_document",
+      "description": "Documento con más de 5 años de antigüedad",
+      "detection_rule": "document_age > 5 years",
+      "severity": "warning",
+      "example_cases": [],
+      "occurrence_count": 0,
+      "false_positive_rate": 0.0,
+      "created_at": "2026-02-02T16:13:26.107825",
+      "last_seen": "2026-02-02T16:13:26.107826"
+    },
+    {
+      "pattern_id": "format_invalid_registry_number",
+      "pattern_type": "wrong_registry_number",
+      "description": "Número de registro en formato incorrecto",
+      "detection_rule": "registry_number not matching expected format",
+      "severity": "error",
+      "example_cases": [],
+      "occurrence_count": 0,
+      "false_positive_rate": 0.0,
+      "created_at": "2026-02-02T16:13:26.107829",
+      "last_seen": "2026-02-02T16:13:26.107830"
+    }
+  ],
+  "last_updated": "2026-02-02T16:13:26.107895",
+  "total_patterns": 5
+}

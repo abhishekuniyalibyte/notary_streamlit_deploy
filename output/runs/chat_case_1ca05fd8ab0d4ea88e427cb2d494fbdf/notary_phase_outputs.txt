@@ -1,0 +1,314 @@
+Notarial Chatbot Flow - Phase Outputs
+Generated: 2026-02-11T11:46:40
+
+Phase 1
+
+╔══════════════════════════════════════════════════════════════╗
+║              DEFINICIÓN DE INTENCIÓN DE CERTIFICADO          ║
+╚══════════════════════════════════════════════════════════════╝
+
+📋 Tipo de Certificado: Certificacion De Firmas
+🎯 Propósito/Destino:   Para Dgi
+👤 Sujeto:              NEXLOG URUGUAY S.A.
+📂 Tipo de Sujeto:      Company
+
+--------------------------------------------------------------------------------
+Phase 2
+
+╔══════════════════════════════════════════════════════════════╗
+║              REQUISITOS LEGALES - FASE 2                     ║
+╚══════════════════════════════════════════════════════════════╝
+
+📋 Tipo de Certificado: Certificacion De Firmas
+🎯 Propósito: Para Dgi
+
+📚 ARTÍCULOS APLICABLES:
+   Obligatorios: 248, 249, 255, 250, 251
+   Referencias cruzadas: 130
+
+📄 DOCUMENTOS REQUERIDOS (3 total):
+   ✓ OBLIGATORIO: Cédula de identidad del firmante
+   ○ OPCIONAL: Poder si actúa en representación
+   ✓ OBLIGATORIO: Certificado único DGI [Vence en 90 días] (DGI)
+
+🏛️ REGLAS INSTITUCIONALES (DGI):
+   - Debe incluir RUT
+   - Situación tributaria al día
+
+--------------------------------------------------------------------------------
+Phase 3
+
+╔══════════════════════════════════════════════════════════════╗
+║              COLECCIÓN DE DOCUMENTOS - FASE 3                ║
+╚══════════════════════════════════════════════════════════════╝
+
+👤 Sujeto: NEXLOG URUGUAY S.A.
+📋 Tipo: Certificacion De Firmas
+🎯 Propósito: Para Dgi
+
+📊 COBERTURA DE DOCUMENTOS:
+   Total requeridos: 2
+   Presentes: 1
+   Faltantes: 1
+   Cobertura: 50.0%
+
+📁 DOCUMENTOS CARGADOS (1 total):
+   📄 CERTIFICACION DE FIRMA ANNA FERREYRA. CONTROLCOMPLETO SA. PARA FIRMA DIGITAL ABITAB.docx [DOCX] (16.7 KB) - Tipo: cedula_identidad - Digital
+
+⚠️  DOCUMENTOS FALTANTES (1):
+   ❌ Certificado único DGI
+
+--------------------------------------------------------------------------------
+Phase 4
+
+╔══════════════════════════════════════════════════════════════╗
+║              EXTRACCIÓN DE DATOS - FASE 4                    ║
+╚══════════════════════════════════════════════════════════════╝
+
+📊 RESUMEN:
+   Total documentos: 1
+   Exitosos: 1
+   Fallidos: 0
+   Tasa de éxito: 100.0%
+
+📄 RESULTADOS POR DOCUMENTO:
+
+✅ CERTIFICACION DE FIRMA ANNA FERREYRA. CONTROLCOMPLETO SA. PARA FIRMA DIGITAL ABITAB.docx
+
+📄 DOCUMENTO: CEDULA_IDENTIDAD
+   Método extracción: TEXT
+   Confianza: 70.0%
+
+📊 DATOS EXTRAÍDOS:
+   Empresa: NEXLOG URUGUAY S.A.
+   RUT: 217380130014
+   CI: 4.337.123-8
+   Registro Comercio: 4476
+   Padrón BPS: 6441259
+   Fechas encontradas: 2014-02-24, 2014-03-21, 2014-04-21
+   Emails: a.ferreyra@ninexus.com
+
+--------------------------------------------------------------------------------
+Phase 5
+
+╔══════════════════════════════════════════════════════════════╗
+║              MATRIZ DE VALIDACIÓN - FASE 5                   ║
+╚══════════════════════════════════════════════════════════════╝
+
+❌ ESTADO GENERAL: INVALID
+   ¿Puede emitir certificado?: ❌ NO
+
+📊 RESUMEN DE PROBLEMAS:
+   🔴 Críticos: 3
+   🟠 Errores: 0
+   🟡 Advertencias: 5
+   🔵 Info: 0
+
+📄 VALIDACIÓN DE DOCUMENTOS (3 total):
+
+   ✅ CEDULA_IDENTIDAD [REQUERIDO] - PRESENTE
+   ❌ PODER [OPCIONAL] - FALTANTE
+   ❌ CERTIFICADO_DGI [REQUERIDO] - FALTANTE
+      🔴 certificado_dgi: Falta documento obligatorio: Certificado único DGI
+      Recomendación: Cargar Certificado único DGI
+
+🔍 VALIDACIÓN DE ELEMENTOS (5 total):
+
+   ❌ Identity Verification: WARNING
+      🟡 identity_verification: Verificar manualmente: identity verification
+      Recomendación: Revisar documentos manualmente
+   ❌ Document Source: WARNING
+      🟡 document_source: Verificar manualmente: document source
+      Recomendación: Revisar documentos manualmente
+   ❌ Destination Entity: WARNING
+      🟡 destination_entity: Verificar manualmente: destination entity
+      Recomendación: Revisar documentos manualmente
+   ❌ Validity Dates: WARNING
+      🟡 validity_dates: Verificar manualmente: validity dates
+      Recomendación: Revisar documentos manualmente
+   ❌ Signature Presence: WARNING
+      🟡 signature_presence: Verificar manualmente: signature presence
+      Recomendación: Revisar documentos manualmente
+
+⚠️ PROBLEMAS DE CONSISTENCIA ENTRE DOCUMENTOS:
+
+   🔴 date_consistency_statute_constitution: IMPOSIBLE: Estatuto aprobado (2014-03-21 en CERTIFICACION DE FIRMA ANNA FERREYRA. CONTROLCOMPLETO SA. PARA FIRMA DIGITAL ABITAB.docx) ANTES de la constitución de la empresa (2014-02-24 en CERTIFICACION DE FIRMA ANNA FERREYRA. CONTROLCOMPLETO SA. PARA FIRMA DIGITAL ABITAB.docx). Una empresa no puede tener estatutos aprobados antes de ser constituida.
+      Base legal: Lógica jurídica básica - Art. 248
+      Recomendación: Verificar las fechas en los documentos originales. Posible error de transcripción o documento incorrecto.
+   🔴 date_consistency_registration_constitution: IMPOSIBLE: Registro (2014-04-21 en CERTIFICACION DE FIRMA ANNA FERREYRA. CONTROLCOMPLETO SA. PARA FIRMA DIGITAL ABITAB.docx) ANTES de la constitución de la empresa (2014-02-24 en CERTIFICACION DE FIRMA ANNA FERREYRA. CONTROLCOMPLETO SA. PARA FIRMA DIGITAL ABITAB.docx). Una empresa no puede estar registrada antes de ser constituida.
+      Base legal: Lógica jurídica básica - Art. 249
+      Recomendación: Verificar las fechas en los documentos originales. Posible error de transcripción o documento incorrecto.
+
+📚 VERIFICACIÓN DE ARTÍCULOS:
+
+   ❌ Art. 248 - INVALID: Faltan elementos requeridos: company_name, rut_number, legal_representative
+      Elementos: company_name, rut_number, legal_representative
+      Extracto: Art. 248. Certificado notarial es el instrumento público original autorizado por escribano, con el objeto de: a) acreditar la existencia de situaciones jurídica
+   ❌ Art. 249 - INVALID: Faltan elementos requeridos: document_source
+      Elementos: document_source
+      Extracto: Art. 248. Certificado notarial es el instrumento público original autorizado por escribano, con el objeto de: a) acreditar la existencia de situaciones jurídica
+   ❌ Art. 255 - INVALID: Faltan elementos requeridos: destination_entity, validity_dates
+      Elementos: destination_entity, validity_dates
+      Extracto: Art. 248. Certificado notarial es el instrumento público original autorizado por escribano, con el objeto de: a) acreditar la existencia de situaciones jurídica
+   ❌ Art. 250 - INVALID: Faltan elementos requeridos: signature_presence
+      Elementos: signature_presence
+      Extracto: Art. 248. Certificado notarial es el instrumento público original autorizado por escribano, con el objeto de: a) acreditar la existencia de situaciones jurídica
+   ❌ Art. 251 - INVALID: Faltan elementos requeridos: signature_presence
+      Elementos: signature_presence
+      Extracto: Art. 248. Certificado notarial es el instrumento público original autorizado por escribano, con el objeto de: a) acreditar la existencia de situaciones jurídica
+   ❌ Art. 130 - INVALID: Faltan elementos requeridos: identity_verification
+      Elementos: identity_verification
+      Extracto: Art. 130. En toda escritura pública, deberá establecerse: a) El lugar, la fecha y el registro en que se actúa. b) Los nombres y apellidos de los otorgantes y de
+
+❌ NO PUEDE EMITIR CERTIFICADO - 3 PROBLEMAS CRÍTICOS:
+
+   🔴 certificado_dgi: Falta documento obligatorio: Certificado único DGI
+      Recomendación: Cargar Certificado único DGI
+   🔴 date_consistency_statute_constitution: IMPOSIBLE: Estatuto aprobado (2014-03-21 en CERTIFICACION DE FIRMA ANNA FERREYRA. CONTROLCOMPLETO SA. PARA FIRMA DIGITAL ABITAB.docx) ANTES de la constitución de la empresa (2014-02-24 en CERTIFICACION DE FIRMA ANNA FERREYRA. CONTROLCOMPLETO SA. PARA FIRMA DIGITAL ABITAB.docx). Una empresa no puede tener estatutos aprobados antes de ser constituida.
+      Base legal: Lógica jurídica básica - Art. 248
+      Recomendación: Verificar las fechas en los documentos originales. Posible error de transcripción o documento incorrecto.
+   🔴 date_consistency_registration_constitution: IMPOSIBLE: Registro (2014-04-21 en CERTIFICACION DE FIRMA ANNA FERREYRA. CONTROLCOMPLETO SA. PARA FIRMA DIGITAL ABITAB.docx) ANTES de la constitución de la empresa (2014-02-24 en CERTIFICACION DE FIRMA ANNA FERREYRA. CONTROLCOMPLETO SA. PARA FIRMA DIGITAL ABITAB.docx). Una empresa no puede estar registrada antes de ser constituida.
+      Base legal: Lógica jurídica básica - Art. 249
+      Recomendación: Verificar las fechas en los documentos originales. Posible error de transcripción o documento incorrecto.
+--------------------------------------------------------------------------------
+Phase 6
+
+╔══════════════════════════════════════════════════════════════╗
+║              ANÁLISIS DE BRECHAS - FASE 6                    ║
+╚══════════════════════════════════════════════════════════════╝
+
+❌ ESTADO: REQUIERE CORRECCIONES
+
+📊 RESUMEN DE PROBLEMAS:
+   Total de brechas: 4
+   🔴 Urgentes (bloquean emisión): 4
+   🟠 Prioridad alta: 0
+   🟡 Prioridad media: 0
+   🟢 Prioridad baja: 0
+
+   ⚠️  Problemas bloqueantes: 4
+
+🔴 PROBLEMAS URGENTES (4):
+   DEBE CORREGIR ESTOS ANTES DE EMITIR CERTIFICADO
+
+🔴 ERROR LÓGICO: Fechas Inconsistentes Statute Constitution [URGENT]
+   IMPOSIBLE: Estatuto aprobado (2014-03-21 en CERTIFICACION DE FIRMA ANNA FERREYRA. CONTROLCOMPLETO SA. PARA FIRMA DIGITAL ABITAB.docx) ANTES de la constitución de la empresa (2014-02-24 en CERTIFICACION DE FIRMA ANNA FERREYRA. CONTROLCOMPLETO SA. PARA FIRMA DIGITAL ABITAB.docx). Una empresa no puede tener estatutos aprobados antes de ser constituida.
+   ⚖️  Base legal: Lógica jurídica básica - Art. 248
+   📊 Estado actual: Estatuto aprobado ANTES de constitución de empresa
+   ✅ Estado requerido: Fecha de constitución ANTES O IGUAL a fecha de aprobación de estatuto
+   🔧 Acción requerida: Verificar las fechas en los documentos originales. Posible error de transcripción o documento incorrecto.
+
+🔴 ERROR LÓGICO: Fechas Inconsistentes Registration Constitution [URGENT]
+   IMPOSIBLE: Registro (2014-04-21 en CERTIFICACION DE FIRMA ANNA FERREYRA. CONTROLCOMPLETO SA. PARA FIRMA DIGITAL ABITAB.docx) ANTES de la constitución de la empresa (2014-02-24 en CERTIFICACION DE FIRMA ANNA FERREYRA. CONTROLCOMPLETO SA. PARA FIRMA DIGITAL ABITAB.docx). Una empresa no puede estar registrada antes de ser constituida.
+   ⚖️  Base legal: Lógica jurídica básica - Art. 249
+   📊 Estado actual: Registro ANTES de constitución de empresa
+   ✅ Estado requerido: Fecha de constitución ANTES O IGUAL a fecha de registro
+   🔧 Acción requerida: Verificar las fechas en los documentos originales. Posible error de transcripción o documento incorrecto.
+
+🔴 Patrón detectado: Estatuto aprobado antes de la constitución de la empresa [URGENT]
+   Estatuto aprobado 2014-03-21 ANTES de constitución 2014-02-24 (Confianza: 95%)
+   ⚖️  Base legal: Aprendizaje de errores históricos
+   📊 Estado actual: Patrón de error encontrado en statute_approval_date
+   ✅ Estado requerido: Datos correctos sin errores históricos conocidos
+   🔧 Acción requerida: Verificar fechas en documentos originales. Posible error de transcripción o documento incorrecto.
+
+🔴 Patrón detectado: Registro antes de la constitución de la empresa [URGENT]
+   Registro 2014-04-21 ANTES de constitución 2014-02-24 (Confianza: 95%)
+   ⚖️  Base legal: Aprendizaje de errores históricos
+   📊 Estado actual: Patrón de error encontrado en registration_date
+   ✅ Estado requerido: Datos correctos sin errores históricos conocidos
+   🔧 Acción requerida: Verificar fecha de registro en documento oficial.
+
+
+📄 REPORTE POR DOCUMENTO (3):
+
+   ✅ Cedula Identidad - PRESENTE
+   ❌ Poder - FALTANTE
+   ❌ Certificado Dgi - FALTANTE (1 problemas)
+      ⚠️  Documento obligatorio faltante
+      💡 Cargar certificado dgi
+      💡 Verificar que documento tenga menos de 90 días
+
+❌ PRÓXIMOS PASOS:
+   1. Corregir problemas urgentes listados arriba
+   2. Re-ejecutar validación (Fase 5)
+   3. Verificar que no hayan problemas bloqueantes
+   4. Proceder a Fase 7
+--------------------------------------------------------------------------------
+Phase 7
+
+======================================================================
+           FASE 7: RESULTADO DE ACTUALIZACIÓN DE DATOS
+======================================================================
+
+📊 RESUMEN DE ACTUALIZACIONES:
+   Total de brechas detectadas: 4
+   Brechas atendidas: 0
+   Actualizaciones exitosas: 0 ✅
+   Actualizaciones fallidas: 0 ❌
+   No intentadas: 0 ⏭️
+
+📁 ESTADO DE COLECCIÓN:
+   Documentos antes: 3
+   Documentos después: 1
+
+⏰ Timestamp: 2026-02-11 11:46:34
+
+
+ℹ️  Fuentes oficiales no configuradas; se requiere verificación manual o carga de documentos.
+
+======================================================================
+
+--------------------------------------------------------------------------------
+Phase 8
+
+======================================================================
+           FASE 8: CONFIRMACIÓN LEGAL FINAL
+======================================================================
+
+❌ DECISIÓN: REJECTED
+🔴 NIVEL DE CUMPLIMIENTO: NON COMPLIANT
+
+📊 RESUMEN DE VERIFICACIONES:
+   Total de verificaciones: 8
+   Verificaciones exitosas: 1 ✅
+   Verificaciones fallidas: 7 ❌
+
+   Problemas bloqueantes: 7 🚫
+   Problemas críticos: 6 🔴
+   Advertencias: 0 🟡
+
+📋 RATIONALE:
+Certificado rechazado: 7 problema(s) bloqueante(s), 6 problema(s) crítico(s). Debe resolver estos problemas antes de generar certificado.
+
+⏰ Timestamp: 2026-02-11 11:46:34
+👤 Validado por: Sistema Automatizado
+
+
+======================================================================
+❌ CERTIFICADO RECHAZADO
+======================================================================
+
+Problemas que deben ser resueltos:
+  • Documentos requeridos presentes: 1 documento(s) faltante(s)
+  • Elementos requeridos presentes: 5 elemento(s) faltante(s)
+  • Consistencia de datos: 2 inconsistencia(s) detectada(s)
+  • Sin problemas críticos: 3 problema(s) crítico(s)
+  • Brechas urgentes resueltas: 3 brecha(s) urgente(s) sin resolver
+  • Requisitos DGI: 1 requisito(s) institucional(es) no cumplido(s)
+  • Cumplimiento de Artículos 248-255: Artículos no cumplidos
+
+No puede proceder a Fase 9 hasta resolver estos problemas.
+
+======================================================================
+
+--------------------------------------------------------------------------------
+Phase 9
+Skipped: Validation-only run (no certificate generation).
+--------------------------------------------------------------------------------
+Phase 10
+Skipped: Validation-only run (no notary review).
+--------------------------------------------------------------------------------
+Phase 11
+Skipped: Validation-only run (no final certificate).
+--------------------------------------------------------------------------------

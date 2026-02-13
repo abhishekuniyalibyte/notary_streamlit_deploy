@@ -1,0 +1,25 @@
+services:
+  notaria:
+    build: .
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    # Dev ergonomics:
+    # - Mount code so changes reflect without rebuilding the image.
+    # - Use polling watcher for reliable reloads in containers.
+    command:
+      [
+        "streamlit",
+        "run",
+        "chatbot.py",
+        "--server.address=0.0.0.0",
+        "--server.port=8501",
+        "--server.runOnSave=true",
+        "--server.fileWatcherType=poll",
+      ]
+    volumes:
+      - .:/app
+      - ./.tmp_uploads:/app/.tmp_uploads
+      - ./Notaria_client_data:/app/Notaria_client_data:ro
+    restart: unless-stopped

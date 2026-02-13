@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.tmp_uploads/
+venv/
+.env
+.git/
+.gitignore
+Notaria_client_data/
+29jan output/
+other files/
+other files 28jan/
+*.zip
+*.pdf

@@ -1,0 +1,26 @@
+# AI-Powered Uruguayan Notarial Certificate Automation System
+# Core dependencies only
+
+# API & Core
+groq>=0.4.0
+openai>=1.0.0
+python-dotenv
+tqdm>=4.66.0
+streamlit>=1.31.0
+
+# Document Processing
+PyPDF2>=3.0.0
+pdfplumber>=0.10.0
+pytesseract>=0.3.10
+Pillow>=10.0.0
+python-docx>=1.1.0
+pdf2image>=1.16.3
+reportlab>=4.0.0
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# System dependencies (install separately):
+# Ubuntu/Debian: sudo apt-get install tesseract-ocr tesseract-ocr-spa poppler-utils
+# macOS: brew install tesseract poppler

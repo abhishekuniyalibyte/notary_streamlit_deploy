@@ -1,0 +1,297 @@
+{
+  "personeria": {
+    "name": "Certificado de Personería",
+    "description": "Certifies the legal status and representation of a company",
+    "articles": ["248", "249", "250", "255"],
+    "cross_references": ["130"],
+    "required_documents": [
+      {
+        "name": "Estatuto",
+        "description": "Company statute/bylaws",
+        "mandatory": true,
+        "max_age_days": null,
+        "validation_rules": [
+          "Must contain company name",
+          "Must show company constitution date",
+          "Must be registered in Registro Nacional de Comercio"
+        ]
+      },
+      {
+        "name": "Acta de Directorio",
+        "description": "Board of directors meeting minutes",
+        "mandatory": true,
+        "max_age_days": 365,
+        "validation_rules": [
+          "Must show current board members",
+          "Must have designation date",
+          "Must be signed"
+        ]
+      },
+      {
+        "name": "Cédula de Identidad",
+        "description": "National ID of representative",
+        "mandatory": true,
+        "max_age_days": null,
+        "validation_rules": [
+          "Must be valid Uruguayan ID",
+          "Must match representative name"
+        ]
+      },
+      {
+        "name": "Inscripción en Registro de Comercio",
+        "description": "Commercial registry inscription",
+        "mandatory": true,
+        "max_age_days": null,
+        "validation_rules": [
+          "Must show registry number",
+          "Must show inscription date"
+        ]
+      }
+    ]
+  },
+  "firma": {
+    "name": "Certificado de Firma",
+    "description": "Certifies the authenticity of signatures",
+    "articles": ["248", "250", "251", "255"],
+    "cross_references": ["130"],
+    "required_documents": [
+      {
+        "name": "Cédula de Identidad",
+        "description": "National ID of signer",
+        "mandatory": true,
+        "max_age_days": null,
+        "validation_rules": [
+          "Must be valid Uruguayan ID",
+          "Must match signer name"
+        ]
+      },
+      {
+        "name": "Documento a firmar",
+        "description": "Document to be signed",
+        "mandatory": true,
+        "max_age_days": null,
+        "validation_rules": [
+          "Must contain signature",
+          "Must identify the signer"
+        ]
+      }
+    ]
+  },
+  "representacion": {
+    "name": "Certificado de Representación",
+    "description": "Certifies the power of representation",
+    "articles": ["248", "249", "250", "255"],
+    "cross_references": ["130"],
+    "required_documents": [
+      {
+        "name": "Estatuto",
+        "description": "Company statute showing representation rules",
+        "mandatory": true,
+        "max_age_days": null,
+        "validation_rules": [
+          "Must define representation powers",
+          "Must be registered"
+        ]
+      },
+      {
+        "name": "Acta de Directorio",
+        "description": "Board meeting designating representative",
+        "mandatory": true,
+        "max_age_days": 365,
+        "validation_rules": [
+          "Must show representative designation",
+          "Must specify powers granted"
+        ]
+      },
+      {
+        "name": "Cédula de Identidad",
+        "description": "ID of representative",
+        "mandatory": true,
+        "max_age_days": null,
+        "validation_rules": [
+          "Must be valid Uruguayan ID"
+        ]
+      },
+      {
+        "name": "Poder",
+        "description": "Power of attorney if applicable",
+        "mandatory": false,
+        "max_age_days": 365,
+        "validation_rules": [
+          "Must be notarized",
+          "Must specify granted powers"
+        ]
+      }
+    ]
+  },
+  "personeria_representacion_representacion": {
+    "name": "Certificado de Personería y Representación",
+    "description": "Combined certificate for legal status and representation",
+    "articles": ["248", "249", "250", "255"],
+    "cross_references": ["130"],
+    "required_documents": [
+      {
+        "name": "Estatuto",
+        "description": "Company statute/bylaws",
+        "mandatory": true,
+        "max_age_days": null,
+        "validation_rules": [
+          "Must contain company name",
+          "Must show company constitution date",
+          "Must define representation rules"
+        ]
+      },
+      {
+        "name": "Acta de Directorio",
+        "description": "Board of directors meeting minutes",
+        "mandatory": true,
+        "max_age_days": 365,
+        "validation_rules": [
+          "Must show current board members",
+          "Must show representative designation"
+        ]
+      },
+      {
+        "name": "Cédula de Identidad",
+        "description": "National ID of representative",
+        "mandatory": true,
+        "max_age_days": null,
+        "validation_rules": [
+          "Must be valid Uruguayan ID"
+        ]
+      },
+      {
+        "name": "Inscripción en Registro de Comercio",
+        "description": "Commercial registry inscription",
+        "mandatory": true,
+        "max_age_days": null,
+        "validation_rules": [
+          "Must show registry number and date"
+        ]
+      }
+    ]
+  },
+  "firma_personeria_representacion_representacion": {
+    "name": "Certificado Completo (Firma, Personería y Representación)",
+    "description": "Complete certificate including signature, legal status, and representation",
+    "articles": ["248", "249", "250", "251", "255"],
+    "cross_references": ["130"],
+    "required_documents": [
+      {
+        "name": "Estatuto",
+        "description": "Company statute/bylaws",
+        "mandatory": true,
+        "max_age_days": null,
+        "validation_rules": [
+          "Must contain all company information",
+          "Must define representation rules"
+        ]
+      },
+      {
+        "name": "Acta de Directorio",
+        "description": "Board meeting minutes",
+        "mandatory": true,
+        "max_age_days": 365,
+        "validation_rules": [
+          "Must show current board and representatives"
+        ]
+      },
+      {
+        "name": "Cédula de Identidad",
+        "description": "National ID",
+        "mandatory": true,
+        "max_age_days": null,
+        "validation_rules": [
+          "Must be valid"
+        ]
+      },
+      {
+        "name": "Inscripción en Registro de Comercio",
+        "description": "Registry inscription",
+        "mandatory": true,
+        "max_age_days": null,
+        "validation_rules": [
+          "Must be registered"
+        ]
+      },
+      {
+        "name": "Documento a firmar",
+        "description": "Document being certified",
+        "mandatory": true,
+        "max_age_days": null,
+        "validation_rules": [
+          "Must contain signature"
+        ]
+      }
+    ]
+  },
+  "purpose_specific_requirements": {
+    "abitab": {
+      "description": "For Abitab (digital signature provider)",
+      "additional_documents": [
+        {
+          "name": "Control completo de sociedad",
+          "description": "Complete company control verification",
+          "mandatory": true
+        }
+      ],
+      "max_certificate_age_days": 30
+    },
+    "bps": {
+      "description": "For BPS (Social Security)",
+      "additional_documents": [
+        {
+          "name": "Certificado común BPS",
+          "description": "BPS common certificate",
+          "mandatory": true,
+          "max_age_days": 30
+        },
+        {
+          "name": "Padrón BPS",
+          "description": "BPS registry",
+          "mandatory": true,
+          "max_age_days": 30
+        }
+      ],
+      "max_certificate_age_days": 30
+    },
+    "dgi": {
+      "description": "For DGI (Tax Authority)",
+      "additional_documents": [
+        {
+          "name": "Certificado de situación tributaria (DGI)",
+          "description": "Tax status certificate",
+          "mandatory": true,
+          "max_age_days": 30
+        }
+      ],
+      "max_certificate_age_days": 30
+    },
+    "bcu": {
+      "description": "For BCU (Central Bank)",
+      "additional_documents": [
+        {
+          "name": "Declaración Jurada Ley 18930 y 19484",
+          "description": "Sworn statement for anti-money laundering laws",
+          "mandatory": true,
+          "max_age_days": 365
+        },
+        {
+          "name": "Certificado de recepción BCU",
+          "description": "BCU reception certificate",
+          "mandatory": true
+        }
+      ]
+    },
+    "bse": {
+      "description": "For BSE (Insurance Bank)",
+      "additional_documents": [
+        {
+          "name": "Estado de Responsabilidad",
+          "description": "Liability statement",
+          "mandatory": true
+        }
+      ]
+    }
+  }
+}

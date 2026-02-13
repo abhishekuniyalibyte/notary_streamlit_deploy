@@ -1,0 +1,22 @@
+Notarial Chatbot Flow - Short Summary
+Generated: 2026-02-11T12:05:18
+============================================================
+SUMMARY OF ANALYSIS
+--------------------
+Subject: Unknown Subject
+Total Files Processed: 1
+Documents Found: personeria_representacion_representacion
+Uploaded Files Status: ATTENTION REQUIRED
+Case Completeness Status: ATTENTION REQUIRED
+
+File Errors Found: Yes (1 files affected)
+Missing Required Documents: None
+Attention Reasons: File errors
+============================================================
+
+File: Inversora Rinlen SA. Certificado personeria, representación y leyes.doc
+Subject: Unknown Subject
+Type: personeria_representacion_representacion
+Status: VALID
+Errors: Yes
+--------------------

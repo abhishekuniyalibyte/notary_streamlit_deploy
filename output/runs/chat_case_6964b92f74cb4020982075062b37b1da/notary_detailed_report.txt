@@ -1,0 +1,28 @@
+Notarial Chatbot Flow - Detailed Analysis Report
+Generated: 2026-02-13T08:37:48
+============================================================
+SUMMARY OF ANALYSIS
+--------------------
+Subject: Unknown Subject
+Total Files Processed: 1
+Documents Found: personeria_representacion_representacion
+Uploaded Files Status: ATTENTION REQUIRED
+Case Completeness Status: ATTENTION REQUIRED
+
+File Errors Found: Yes (1 files affected)
+Missing Required Documents: None
+Attention Reasons: File errors
+============================================================
+
+Details: TREE GARDEN S.A., personeria y representación, Jorge MARQUEZ.doc
+Type: personeria_representacion_representacion (source: content)
+Validation: valid - Document passes validation checks.
+Errors:   - llm_extraction_error: Groq request failed: Error code: 503 - {'error': {'message': 'meta-llama/llama-4-maverick-17b-128e-instruct is currently over capacity. Please try again and back off exponentially. Visit https://groqstatus.com to see if there is an active incident.', 'type': 'internal_server_error'}}
+Issues:   - Item:
+    Field: acta_number
+    Issue Type: missing_field
+    Severity: warning
+    Description: No se encontró número de acta en el acta de directorio.
+    Legal Basis: Art. 248
+    Recommendation: Verificar que el documento incluya este dato.
+--------------------------------------------------------------------------------
