@@ -62,18 +62,25 @@ def compute_case_status(results: Dict[str, Any]) -> Dict[str, Any]:
     error_count = sum(1 for fr in file_results if fr.get("has_error"))
     missing_docs = summarize_missing_documents(results.get("gap_structure") or {})
 
-    # Check for semantic validation errors (consistency + expiry issues)
+    # Check for urgent/high gaps (consistency, expiry, invalid docs, legal noncompliance, etc.)
     gap_structure = results.get("gap_structure") or {}
     all_gaps = gap_structure.get("gaps", []) or []
 
-    semantic_errors = [
+    critical_gaps = [
         gap for gap in all_gaps
-        if gap.get("gap_type") in ("semantic_error", "SEMANTIC_ERROR") and
-        gap.get("priority") in ("urgent", "high", "URGENT", "HIGH")
+        if (gap.get("priority") or "").lower() in ("urgent", "high")
+    ]
+    semantic_errors = [
+        gap for gap in critical_gaps
+        if (gap.get("gap_type") or "").lower() == "semantic_error"
+    ]
+    other_critical_gaps = [
+        gap for gap in critical_gaps
+        if (gap.get("gap_type") or "").lower() not in ("missing_document", "semantic_error")
     ]
 
     status_files = "ATTENTION REQUIRED" if error_count > 0 else "VALID"
-    status_case = "ATTENTION REQUIRED" if (error_count > 0 or bool(missing_docs) or bool(semantic_errors)) else "VALID"
+    status_case = "ATTENTION REQUIRED" if (error_count > 0 or bool(missing_docs) or bool(semantic_errors) or bool(other_critical_gaps)) else "VALID"
 
     return {
         "status_files": status_files,
@@ -82,6 +89,9 @@ def compute_case_status(results: Dict[str, Any]) -> Dict[str, Any]:
         "missing_docs": missing_docs,
         "semantic_errors": semantic_errors,
         "semantic_error_count": len(semantic_errors),
+        "critical_gap_count": len(critical_gaps),
+        "other_critical_gaps": other_critical_gaps,
+        "other_critical_gap_count": len(other_critical_gaps),
         "total_files": len(file_results),
         "doc_types": sorted({fr.get("document_type", "unknown") for fr in file_results}),
     }
@@ -107,6 +117,8 @@ def render_case_status_panel(results: Dict[str, Any]) -> None:
                 issues.append(f"{status['error_count']} file error(s)")
             if status.get("semantic_error_count", 0) > 0:
                 issues.append(f"{status['semantic_error_count']} data consistency/validity issue(s)")
+            if status.get("other_critical_gap_count", 0) > 0:
+                issues.append(f"{status['other_critical_gap_count']} critical rule issue(s)")
             if missing_docs:
                 issues.append(f"{len(missing_docs)} missing document(s)")
 
@@ -2921,28 +2933,39 @@ def render_chat_mode(
                             )
                             st.session_state["chat_flow_phase"] = 2
                     else:
-                        # ── VALIDATE mode: show issues as before ──
+                        # ── VALIDATE mode: show issues ──
+                        status = compute_case_status(results)
                         file_errors = summarize_file_errors(results.get("file_results") or [])
-                        gap_structure = results.get("gap_structure") or {}
-                        all_gaps = gap_structure.get("gaps", []) or []
-                        semantic_errors = [
-                            gap for gap in all_gaps
-                            if gap.get("gap_type") in ("semantic_error", "SEMANTIC_ERROR") and
-                            gap.get("priority") in ("urgent", "high", "URGENT", "HIGH")
-                        ]
+                        missing_docs = status.get("missing_docs") or []
+                        semantic_errors = status.get("semantic_errors") or []
+                        other_critical_gaps = status.get("other_critical_gaps") or []
 
-                        if not file_errors and not semantic_errors:
-                            verdict = "✅ **Your documents look correct!**\n\nAll files are valid with no consistency issues.\n\nSay **\"generate files\"** when you're ready to download the report."
+                        if not file_errors and not missing_docs and not semantic_errors and not other_critical_gaps:
+                            verdict = (
+                                "✅ **Your documents look correct!**\n\n"
+                                "All files are valid with no consistency issues.\n\n"
+                                "Say **\"generate files\"** when you're ready to download the report."
+                            )
                         else:
                             issues_summary = []
                             if file_errors:
                                 issues_summary.append(f"**File Errors ({len(file_errors)} files):**")
                                 issues_summary.extend(file_errors[:5])
+                            if missing_docs:
+                                issues_summary.append(f"\n**Missing Required Documents ({len(missing_docs)}):**")
+                                issues_summary.extend([f"- {d}" for d in missing_docs[:5]])
                             if semantic_errors:
                                 issues_summary.append(f"\n**Data Consistency Issues ({len(semantic_errors)}):**")
                                 for err in semantic_errors[:3]:
                                     issues_summary.append(f"- {err.get('title', 'Consistency error')}")
-                            verdict = f"❌ **Issues found in your documents.**\n\n{chr(10).join(issues_summary)}\n\nSay **\"fix it\"** to auto-correct these issues, or **\"generate files\"** to download the validation report as-is."
+                            if other_critical_gaps:
+                                issues_summary.append(f"\n**Critical Rule Issues ({len(other_critical_gaps)}):**")
+                                for gap in other_critical_gaps[:3]:
+                                    issues_summary.append(f"- {gap.get('title', 'Issue')}")
+                            verdict = (
+                                f"❌ **Issues found in your documents.**\n\n{chr(10).join(issues_summary)}\n\n"
+                                "Say **\"fix it\"** to auto-correct these issues, or **\"generate files\"** to download the validation report as-is."
+                            )
                         st.session_state["chat_flow_phase"] = 2
 
             except Exception as _exc:
@@ -3224,18 +3247,18 @@ def render_chat_mode(
                     assistant_parts.append("Upload the missing doc(s) and say 'check' again.")
             else:
                 with st.spinner("Analyzing..."):
-	                        results = run_flow(
-	                            uploaded_files=uploaded_items,
-	                            intent_inputs=intent_inputs,
-	                            summary_index=summary_index,
-	                            catalog_settings=catalog_settings,
-	                            notary_inputs=st.session_state["chat_case"]["notary_inputs"],
-	                            search_settings=search_settings,
-	                            llm_settings=llm_settings,
-	                            content_only=content_only,
-	                            operation=st.session_state["chat_case"].get("operation", "create"),
-	                            auto_fix=False,
-	                        )
+                            results = run_flow(
+                                uploaded_files=uploaded_items,
+                                intent_inputs=intent_inputs,
+                                summary_index=summary_index,
+                                catalog_settings=catalog_settings,
+                                notary_inputs=st.session_state["chat_case"]["notary_inputs"],
+                                search_settings=search_settings,
+                                llm_settings=llm_settings,
+                                content_only=content_only,
+                                operation=st.session_state["chat_case"].get("operation", "create"),
+                                auto_fix=False,
+                            )
                 st.session_state["chat_last_results"] = results
                 st.session_state["chat_flow_phase"] = 2  # results ready
 
@@ -3390,6 +3413,10 @@ def main() -> None:
     st.write("Streamlit UI for Notarial, dataset matching, and optional web search stub.")
 
     st.sidebar.header("Settings")
+    with st.sidebar.expander("System dependencies", expanded=False):
+        st.write(f"- Poppler (`pdfinfo`): {('found' if shutil.which('pdfinfo') else 'missing')}")
+        st.write(f"- Tesseract (`tesseract`): {('found' if shutil.which('tesseract') else 'missing')}")
+        st.write(f"- LibreOffice (`soffice`): {('found' if (shutil.which('soffice') or shutil.which('libreoffice')) else 'missing')}")
     with st.sidebar.expander("Dataset settings", expanded=False):
         summary_path = st.text_input("certificate_summary.json path", DEFAULT_SUMMARY_PATH)
         catalog_path = st.text_input("client_file_catalogs.json path", DEFAULT_CATALOG_PATH)
