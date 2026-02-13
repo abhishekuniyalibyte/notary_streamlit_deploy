@@ -2,6 +2,7 @@ __pycache__
 Notaria_client_data
 venv
 .env
+.streamlit/secrets.toml
 other files
 .tmp_uploads/
 #sdsa.env

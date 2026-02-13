@@ -27,8 +27,13 @@ Optional:
 
 ### Streamlit Community Cloud
 
-If you want to support **legacy `.doc`** uploads, Streamlit Cloud must have LibreOffice available.
-This repo includes `packages.txt` (used by Streamlit Cloud) to install it during build.
+This repo includes `packages.txt` (used by Streamlit Cloud) to install system dependencies during build:
+
+- `libreoffice` (legacy `.doc` extraction)
+- `poppler-utils` (PDF -> image conversion for OCR; fixes “Is poppler installed and in PATH?”)
+- `tesseract-ocr` + `tesseract-ocr-spa` (OCR fallback)
+
+For Groq, do **not** commit `.env`. Add `GROQ_API_KEY` in Streamlit Cloud → App settings → Secrets.
 
 ### Docker
 
@@ -210,6 +215,7 @@ Do not commit runtime or client-document folders. Typical ignores:
 - `.tmp_uploads/` (uploaded case files; can be large and sensitive)
 - `**/fixed/` (generated fixed outputs)
 - `.env` (secrets)
+- `.streamlit/secrets.toml` (secrets)
 - `venv/`, `__pycache__/`, `.pytest_cache/`
 
 ## How To Run (Local)
@@ -221,7 +227,7 @@ Do not commit runtime or client-document folders. Typical ignores:
 pip install -r requirements.txt
 ```
 
-3. Add `GROQ_API_KEY` to `.env` if you want LLM extraction/classification.
+3. Add `GROQ_API_KEY` to `.env` (local) if you want LLM extraction/classification.
 4. Run the app:
 
 ```bash

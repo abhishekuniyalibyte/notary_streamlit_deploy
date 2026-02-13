@@ -442,6 +442,14 @@ def is_zip_file(file_path: Path) -> bool:
         return False
 
 
+def get_groq_api_key() -> str:
+    try:
+        secret_value = st.secrets.get("GROQ_API_KEY", "")
+    except Exception:
+        secret_value = ""
+    return (secret_value or os.getenv("GROQ_API_KEY", "")).strip()
+
+
 def extract_text_from_doc_via_libreoffice(file_path: Path) -> Tuple[str, Optional[str]]:
     soffice_path = shutil.which("soffice") or shutil.which("libreoffice")
     if not soffice_path:
@@ -3030,7 +3038,7 @@ def render_chat_mode(
         # CONVERSATIONAL ASSISTANT - Intent Detection
         # ========================================================================
         try:
-            groq_key = os.getenv("GROQ_API_KEY", "")
+            groq_key = get_groq_api_key()
             if groq_key:
                 intent_result = detect_user_intent(user_message, groq_key)
 
@@ -3391,9 +3399,9 @@ def main() -> None:
         value=True,
     )
     content_only = st.sidebar.checkbox("Match by content only", value=True)
+    load_dotenv()
     if enable_llm:
-        load_dotenv()
-        groq_api_key = os.getenv("GROQ_API_KEY", "")
+        groq_api_key = get_groq_api_key()
         extraction_model = st.sidebar.text_input(
             "Groq extraction model",
             value=DEFAULT_EXTRACTION_MODEL,
@@ -3407,14 +3415,16 @@ def main() -> None:
             value=DEFAULT_QA_MODEL,
         )
         if groq_api_key:
-            st.sidebar.caption("GROQ API key loaded from .env")
+            st.sidebar.caption("GROQ API key loaded")
         else:
-            st.sidebar.warning("GROQ API key not found in .env")
+            st.sidebar.warning("GROQ API key not found (set Streamlit Secrets or env var).")
     else:
         groq_api_key = ""
         extraction_model = DEFAULT_EXTRACTION_MODEL
         analysis_model = DEFAULT_ANALYSIS_MODEL
         qa_model = DEFAULT_QA_MODEL
+
+    llm_enabled = bool(enable_llm and groq_api_key)
     enable_search = st.sidebar.checkbox("Enable web search fallback (stub)", value=False)
     if enable_search:
         search_provider = st.sidebar.selectbox("Search provider", ["none", "serpapi", "bing"])
@@ -3466,7 +3476,7 @@ def main() -> None:
             "api_key": search_api_key,
         }
         llm_settings = {
-            "enabled": enable_llm,
+            "enabled": llm_enabled,
             "extraction_model": extraction_model,
             "analysis_model": analysis_model,
             "api_key": groq_api_key,
@@ -3746,7 +3756,7 @@ def main() -> None:
             "api_key": search_api_key,
         }
         llm_settings = {
-            "enabled": enable_llm,
+            "enabled": llm_enabled,
             "extraction_model": extraction_model,
             "analysis_model": analysis_model,
             "api_key": groq_api_key,
@@ -4101,10 +4111,8 @@ def main() -> None:
     certificate_text = results.get("certificate_text", "")
     if not file_results and not certificate_text:
         st.info("No document content available for Q&A.")
-    elif not enable_llm:
-        st.info("Enable LLM extraction + classification to use Q&A.")
-    elif not groq_api_key:
-        st.warning("GROQ API key not found in .env.")
+    elif not llm_enabled:
+        st.info("Set `GROQ_API_KEY` (Streamlit Secrets or env var) to use Q&A.")
     else:
         scope_options = ["All documents"]
         scope_map = {"All documents": "all"}
