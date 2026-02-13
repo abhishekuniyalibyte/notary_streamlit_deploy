@@ -25,6 +25,11 @@ Optional:
 - Set `GROQ_API_KEY` in `.env` if you want LLM extraction/classification (Groq).
 - Install system tools for OCR + scanned PDF support (see `Dockerfile` for the typical packages).
 
+### Streamlit Community Cloud
+
+If you want to support **legacy `.doc`** uploads, Streamlit Cloud must have LibreOffice available.
+This repo includes `packages.txt` (used by Streamlit Cloud) to install it during build.
+
 ### Docker
 
 ```bash

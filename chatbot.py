@@ -445,7 +445,11 @@ def is_zip_file(file_path: Path) -> bool:
 def extract_text_from_doc_via_libreoffice(file_path: Path) -> Tuple[str, Optional[str]]:
     soffice_path = shutil.which("soffice") or shutil.which("libreoffice")
     if not soffice_path:
-        return "", "LibreOffice is required to extract legacy .doc files."
+        return (
+            "",
+            "LibreOffice (soffice) is required to extract legacy .doc files. "
+            "If deploying on Streamlit Community Cloud, add a `packages.txt` with `libreoffice`.",
+        )
 
     with tempfile.TemporaryDirectory() as tmpdir:
         cmd = [
